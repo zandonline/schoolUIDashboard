@@ -25,6 +25,14 @@ class Create extends React.Component{
         super(props);
             this.state = {
             item:{
+                "name":"",
+                "category": "",
+                "startdate": "",
+                "enddate": "",
+                "teacher": "",
+                "point": 0,
+                "credit": 0,
+                "price": 0,
                 
             },
             errorAddItem:false,
@@ -137,7 +145,7 @@ class Create extends React.Component{
                                         type="text"
                                         name="name" 
                                         id="name" 
-                                        onChange={(e)=>this.changeInput('name',e.target.value,false)} />
+                                        onChange={(e)=>this.changeInput('name',false,e.target.value)} />
                                 </Col>
                             </FormGroup>
                             <FormGroup row>

@@ -60,6 +60,7 @@ class Update extends React.Component{
         });
         const date =this.state.date;
         const item =this.state.item;
+        item.category = this.props.item.category._id;
         var days = this.state.item.days;
         if( item.startdate !== '' ){
             var res = item.startdate.split("/");
@@ -73,7 +74,7 @@ class Update extends React.Component{
             date.endMonth=res[1];
             date.endYear=res[0];
         }
-        this.setState({date,days});
+        this.setState({date,days,item});
       }
     addItem = () => {
         var item = this.state.item;
@@ -85,7 +86,6 @@ class Update extends React.Component{
             item.birthday=date.endYear+'/'+date.endMonth+'/'+date.endDay
          }
          item.days = this.state.days;
-         item.category = item.category._id;
  
             if(item.category){
                 console.log("items",item)
@@ -146,7 +146,7 @@ class Update extends React.Component{
         const date = this.state.date;
         return(
             <div>
-            <Modal isOpen={true}  className={this.props.className} RTL >
+            <Modal isOpen={true}  className={this.props.className} RTL size="lg">
             <ModalHeader > ویرایش دوره  </ModalHeader>
             <ModalBody>
 
@@ -159,7 +159,7 @@ class Update extends React.Component{
                                         name="name" 
                                         id="name" 
                                         value={item.name}
-                                        onChange={(e)=>this.changeInput('name',e.target.value,false)} />
+                                        onChange={(e)=>this.changeInput('name',false,e.target.value)} />
                                 </Col>
                             </FormGroup>
                             <FormGroup row>

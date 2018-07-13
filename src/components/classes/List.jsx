@@ -90,7 +90,7 @@ class List extends Component {
                   return (
                     <tr>
                       <th scope="row">{index+1}</th>
-                      <td></td>
+                      <td>{item.name}</td>
                       <td>{item.teacher}</td>
                       <td>{item.category.name}</td>
                       <td>
