@@ -12,9 +12,9 @@ class Delete extends React.Component{
         return(
             <div>
                 <Modal isOpen={true} toggle={this.props.toggle} className={this.props.className}>
-                    <ModalHeader className = "rtl" > حذف لیست </ModalHeader>
+                    <ModalHeader className = "rtl" > حذف کاربر </ModalHeader>
                         <ModalBody>
-                            آیا از حذف این لیست اطمینان دارید؟
+                            آیا از حذف این کاربر اطمینان دارید؟
                         </ModalBody>
                     <ModalFooter>
                         <Button  style={{ width:"46%",marginRight:"4%" }} color="secondary" onClick={this.props.toggle}>انصراف</Button>
