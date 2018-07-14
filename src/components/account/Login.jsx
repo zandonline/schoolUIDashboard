@@ -23,9 +23,7 @@ class Login extends Component {
           username,password
       }})
       .then((resp)=>{
-        this.state.remember ?
-        localStorage.setItem('token56266956',resp.data.token):
-        sessionStorage.setItem('token56266956',resp.data.token);
+        localStorage.setItem('token56266956',resp.data.token);
         window.location.reload();
       })
       .catch(error=>{

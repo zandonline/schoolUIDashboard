@@ -13,16 +13,20 @@ class Index extends Component {
         isLoading:true,
         };
   }
+  renderLogin = () =>{
+    
+    if( this.state.isLogin === null ){
+      return <Login/>
+    }
+  }
   render() {
     if( !this.state.isLoading ){
       return <div>is loading</div>
     }
-    if( this.state.isLogin === null ){
-      return <Login/>
-    }
     return (
       <Container>
-        <Routing/>               
+      { this.renderLogin() } 
+        <Routing/>                      
       </Container>
     );
   }

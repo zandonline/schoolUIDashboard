@@ -57,6 +57,8 @@ class Update extends React.Component{
         if(date.brithYear!=='' && date.brithMonth !==''&&date.brithDay !==''){    
             item.birthday=date.brithYear+'/'+date.brithMonth+'/'+date.brithDay
          }
+         item.password = item.phone_numbers[0]; 
+         item.username = item.phone_numbers[0];
             if(item.username){
             axios({ method: 'PATCH', url: `${URL}customers/${this.state.item._id}`,headers: {
                 "accept":"application/json",
@@ -134,10 +136,11 @@ class Update extends React.Component{
                                 <Col sm={9}>
                                     <Input 
                                         type="text"
-                                        name="username" 
-                                        id="username" 
-                                        value={item.username} 
-                                        onChange={(e)=>this.changeInput(e.target.value,'username',false)} />
+                                        name="national_code" 
+                                        id="national_code" 
+                                        maxlength="11"
+                                        value={item.national_code?item.national_code:null} 
+                                        onChange={(e)=>this.changeInput(e.target.value,'national_code',false)} />
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
@@ -255,6 +258,7 @@ class Update extends React.Component{
                                 <Col sm={9}>
                                     <Input 
                                         type="text"
+                                        maxlength="13"
                                         name="phone_number" 
                                         id="phone_number" 
                                         value={item.phone_numbers[0]}
@@ -268,6 +272,7 @@ class Update extends React.Component{
                                         type="text"
                                         name="phone_number" 
                                         id="phone_number" 
+                                        maxlength="13"
                                         value={item.phone_numbers[1]}
                                         onChange={(e)=>this.changeInput(e.target.value,false,'phone_numbers',1)} />
                                 </Col>
@@ -278,24 +283,26 @@ class Update extends React.Component{
                                     <Input 
                                         type="text"
                                         name="phone_number" 
+                                        maxlength="13"
                                         id="phone_number" 
                                         value={item.phone_numbers[2]}
                                         onChange={(e)=>this.changeInput(e.target.value,false,'phone_numbers',2)} />
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label for="phone_number" sm={3}> تلفن ثابت 1 </Label>
+                                <Label for="phone_number" sm={3}> تلفن ثابت </Label>
                                 <Col sm={9}>
                                     <Input 
                                         type="text"
                                         name="phone_number" 
                                         id="phone_number"
+                                        maxlength="13"
                                         value={item.phones[0]} 
                                         onChange={(e)=>this.changeInput(e.target.value,false,'phones',0)} />
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label for="phone_number" sm={3}> تلفن ثابت 2 </Label>
+                                <Label for="phone_number" sm={3}>  رشته  </Label>
                                 <Col sm={9}>
                                     <Input 
                                         type="text"
@@ -306,7 +313,7 @@ class Update extends React.Component{
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label for="phones" sm={3}>تلفن ثابت 3 </Label>
+                                <Label for="phones" sm={3}> علایق </Label>
                                 <Col sm={9}>
                                     <Input 
                                         type="text"

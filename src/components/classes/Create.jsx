@@ -36,6 +36,7 @@ class Create extends React.Component{
                 
             },
             errorAddItem:false,
+            success:false,
             classCategory:[],
             days:[
                 {
@@ -70,6 +71,7 @@ class Create extends React.Component{
         });
       }
     addItem = () => {
+        this.setState({errorAddItem:false,success:false})
         var item = this.state.item;
         var date = this.state.date;
         if(date.startYear!=='' && date.startMonth !==''&&date.startDay !==''){    
@@ -88,8 +90,8 @@ class Create extends React.Component{
                 },data:item
             })
             .then((resp)=>{
-                this.setState({errorAddItem:false})
-                this.props.getItems();
+                this.setState({errorAddItem:false,success:"دوره جدید ثبت شد"})
+                window.location.reload();
             })
             .catch(error=>{
                 if(error.response.status === 412){
@@ -184,10 +186,11 @@ class Create extends React.Component{
                                     <CustomInput 
                                         className="rtl"  
                                         type="select" 
-                                        id="category" 
+                                        id="category"                                         
                                         name="category"
                                         onChange={(e)=>this.changeInput("category",false,e.target.value )} 
                                     >
+                                        <option value={false}> یک گزینه را انتخاب کنید </option>
                                     {
                                         this.state.classCategory.length > 0?
                                         this.state.classCategory.map((item)=>{
@@ -307,6 +310,9 @@ class Create extends React.Component{
 
                         <Alert isOpen={this.state.errorAddItem} color="danger" style={{ width:"100%",textAlign:'center' }}>
                             {this.state.errorAddItem}
+                        </Alert>
+                        <Alert isOpen={this.state.success} color="success" style={{ width:"100%",textAlign:'center' }}>
+                            {this.state.success}
                         </Alert>
             </div>                        
             </div>

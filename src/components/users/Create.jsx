@@ -31,11 +31,13 @@ class Create extends React.Component{
                 },
                 username:false,
                 gender:'male',
+                national_code:'',
                 marriage_date:'',
                 phones:[null,null,null],
                 phone_numbers:[null,null,null],
             },
             errorAddItem:false,
+            success:false,
             date:{
                 margingYear:'',
                 margingMonth:'',
@@ -47,6 +49,7 @@ class Create extends React.Component{
             };
     }
     addItem = () => {
+        this.setState({errorAddItem:false,success:false})
         var item = this.state.item;
         var date = this.state.date;
         if(date.margingYear!=='' && date.margingMonth !==''&&date.margingDay !==''){    
@@ -56,6 +59,7 @@ class Create extends React.Component{
             item.birthday=date.brithYear+'/'+date.brithMonth+'/'+date.brithDay
          }
          item.password = item.phone_numbers[0]; 
+         item.username = item.phone_numbers[0];
             if(item.username && item.password !== null && item.firstname && item.lastname){
             axios({ method: 'POST', url: `${URL}customers`,headers: {
                 "accept":"application/json",
@@ -64,12 +68,12 @@ class Create extends React.Component{
                 },data:item
             })
             .then((resp)=>{
-                this.setState({errorAddItem:false})
-                this.props.getItems();
+                this.setState({errorAddItem:false,success:"کاربر جدید ثبت شد"})
+                window.location.reload(); 
             })
             .catch(error=>{
                 if(error.response.status === 412){
-                    this.setState({errorAddItem:'کد ملی وارد شده تکراری می باشد'});
+                    this.setState({errorAddItem:'شماره تلفن وارد شده در سیستم موجود می باشد'});
 
                 }else{
                     this.setState({errorAddItem:'لطفا تمامی فیلد ها رو پر کنید'});
@@ -124,13 +128,14 @@ class Create extends React.Component{
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label for="username" sm={3}> کد ملی (الزامی) </Label>
+                                <Label for="username" sm={3}> کد ملی  </Label>
                                 <Col sm={9}>
                                     <Input 
                                         type="text"
-                                        name="username" 
-                                        id="username" 
-                                        onChange={(e)=>this.changeInput(e.target.value,'username',false)} />
+                                        maxlength="11"
+                                        name="code_meli" 
+                                        id="code_meli" 
+                                        onChange={(e)=>this.changeInput(e.target.value,'national_code',false)} />
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
@@ -242,6 +247,7 @@ class Create extends React.Component{
                                 <Col sm={9}>
                                     <Input 
                                         type="text"
+                                        maxlength="13"
                                         name="phone_number" 
                                         id="phone_number" 
                                         onChange={(e)=>this.changeInput(e.target.value,false,'phone_numbers',0)} />
@@ -253,6 +259,7 @@ class Create extends React.Component{
                                     <Input 
                                         type="text"
                                         name="phone_number" 
+                                        maxlength="13"
                                         id="phone_number" 
                                         onChange={(e)=>this.changeInput(e.target.value,false,'phone_numbers',1)} />
                                 </Col>
@@ -263,22 +270,24 @@ class Create extends React.Component{
                                     <Input 
                                         type="text"
                                         name="phone_number" 
+                                        maxlength="13"
                                         id="phone_number" 
                                         onChange={(e)=>this.changeInput(e.target.value,false,'phone_numbers',2)} />
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label for="phone_number" sm={3}> تلفن ثابت 1 </Label>
+                                <Label for="phone_number" sm={3}> تلفن ثابت </Label>
                                 <Col sm={9}>
                                     <Input 
                                         type="text"
-                                        name="phone_number" 
+                                        name="phone_number"
+                                        maxlength="13" 
                                         id="phone_number" 
                                         onChange={(e)=>this.changeInput(e.target.value,false,'phones',0)} />
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label for="phone_number" sm={3}> تلفن ثابت 2 </Label>
+                                <Label for="phone_number" sm={3}> رشته  </Label>
                                 <Col sm={9}>
                                     <Input 
                                         type="text"
@@ -288,7 +297,7 @@ class Create extends React.Component{
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label for="phones" sm={3}>تلفن ثابت 3 </Label>
+                                <Label for="phones" sm={3}> علایق </Label>
                                 <Col sm={9}>
                                     <Input 
                                         type="text"
@@ -321,12 +330,14 @@ class Create extends React.Component{
                                 </Col>
                             </FormGroup>
                         </Form>
-                        
-                        <Button  style={{ width:"46%",marginRight:"4%" }} color="secondary" onClick={this.toggle}>انصراف</Button>
-                        <Button  style={{ width:"46%" }} color="primary" onClick={this.addItem} >ثبت</Button>{' '}
+                    
+                        <Button  style={{ width:"100%" }} color="primary" onClick={this.addItem} >ثبت</Button>{' '}
 
                         <Alert isOpen={this.state.errorAddItem} color="danger" style={{ width:"100%",textAlign:'center' }}>
                             {this.state.errorAddItem}
+                        </Alert>
+                        <Alert isOpen={this.state.success} color="success" style={{ width:"100%",textAlign:'center' }}>
+                            {this.state.success}
                         </Alert>
             </div>                        
             </div>
