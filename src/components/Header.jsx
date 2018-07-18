@@ -80,6 +80,23 @@ class Header extends React.Component{
                             </Link>
                             </DropdownMenu>
                         </UncontrolledDropdown>
+                        <UncontrolledDropdown nav inNavbar>
+                            <DropdownToggle nav caret>
+                            دانشجویان
+                            </DropdownToggle>
+                            <DropdownMenu right>
+                            <Link to='/students' style={{ textDecoration: 'none' }}>
+                            <DropdownItem>
+                                لیست دانشجو ها
+                            </DropdownItem>
+                            </Link>
+                            <Link to='/students/create' style={{ textDecoration: 'none' }}>
+                            <DropdownItem>
+                             ثبت دانشجو جدید
+                            </DropdownItem>
+                            </Link>
+                            </DropdownMenu>
+                        </UncontrolledDropdown>
                         </Nav>                        
                     </Collapse>
                     <UncontrolledDropdown >
