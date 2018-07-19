@@ -262,7 +262,7 @@ class Create extends React.Component{
                             />
                         </FormGroup> 
                         <FormGroup>
-                            <Label>  دانشجو  </Label>
+                            <Label>  دوره  </Label>
                             <Select
                                 id="state-select"
                                 onBlurResetsInput={false}

@@ -32,8 +32,8 @@ class List extends Component {
       });
   }
   deleteItem(id){
-    fetch(`${URL}customers/${id}`,{
-        method:'DELETE',
+    fetch(`${URL}transaction/${id}/payed`,{
+        method:'POST',
         headers:{
             "Authorization":`Bearer ${TOKEN}`
         }
@@ -67,7 +67,7 @@ class List extends Component {
   render() {
 
     return (
-      <Container>
+      <Container style={{fontSize:"13px"}}>
         {
           this.renderBox(this.state.status)
         }
@@ -79,6 +79,7 @@ class List extends Component {
                 <tr>
                   <th>ردیف</th>
                   <th>نام و نام خانوادگی</th>
+                  <th>نام دوره</th>
                   <th>تاریخ شروع کلاس</th>
                   <th> تاریخ پایان کلاس </th>
                   <th>نوع پرداخت</th>
@@ -93,11 +94,24 @@ class List extends Component {
                     <tr>
                       <th scope="row">{index+1}</th>
                       <td>{item.customer.firstname+' '+item.customer.lastname}</td>
+                      <td>{item.class.name}</td>
                       <td>{item.class.startdate}</td>
                       <td>{item.class.enddate}</td>
                       <td>{item.type}</td>        
                       <td>{item.amount}</td>   
-                      <td>{item.payment_date}</td>                
+                      <td>{item.payment_date}</td>  
+                      <td>
+                          <Row>
+                              <Col>
+                                <Button  outline size="sm" color="primary" block
+                                         onClick={()=>this.setState({ status:"update",itemSelected:index})} >ویرایش</Button>
+                              </Col>
+                              <Col>
+                                <Button  outline size="sm" color={item.status === 'payed'?"success":"danger"} block
+                                          >{item.status === 'payed' ? "پرداخت شده" : "در انتظار پرداخت"}</Button>
+                              </Col>
+                          </Row>
+                    </td>                   
                     </tr>
                   )
                 } ) :null
