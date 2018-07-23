@@ -48,17 +48,17 @@ class Header extends React.Component{
                         <Nav navbar>
                         <UncontrolledDropdown nav inNavbar>
                             <DropdownToggle nav caret>
-                            کاربران 
+                            مشتریان 
                             </DropdownToggle>
                             <DropdownMenu right>
                             <Link to='/users' style={{ textDecoration: 'none' }}>
                             <DropdownItem>
-                                لیست کاربران
+                                لیست مشتریان
                             </DropdownItem>
                             </Link>
                             <Link to='/users/create' style={{ textDecoration: 'none' }}>
                             <DropdownItem>
-                                ایجاد کاربر جدید
+                                ایجاد مشتری جدید
                             </DropdownItem>
                             </Link>
                             </DropdownMenu>

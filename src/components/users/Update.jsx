@@ -33,7 +33,9 @@ class Update extends React.Component{
                 brithYear:'',
                 brithMonth:'',
                 brithDay:'',
-            }
+            },
+            phones:this.props.item.phones.length === 0?['']:this.props.item.phones,
+            phone_numbers:this.props.item.phone_numbers
             };
     }
     componentDidMount(){
@@ -45,10 +47,17 @@ class Update extends React.Component{
         date.margingMonth=res[1];
         date.margingYear=res[0];
     }
+    if( item.birthday !== '' ){
+        var res = item.birthday.split("/");
+        date.brithDay=res[2];
+        date.brithMonth=res[1];
+        date.brithYear=res[0];
+    }
     this.setState({date})
 
     }
     addItem = () => {
+        this.setState({errorAddItem:false,success:false})
         var item = this.state.item;
         var date = this.state.date;
         if(date.margingYear!=='' && date.margingMonth !==''&&date.margingDay !==''){    
@@ -57,6 +66,11 @@ class Update extends React.Component{
         if(date.brithYear!=='' && date.brithMonth !==''&&date.brithDay !==''){    
             item.birthday=date.brithYear+'/'+date.brithMonth+'/'+date.brithDay
          }
+         var f = item.favorites;
+         item.favorites = [];
+         item.favorites[0]=f;
+         item.phone_numbers = this.state.phone_numbers;
+         item.phones = this.state.phones;
          item.password = item.phone_numbers[0]; 
          item.username = item.phone_numbers[0];
             if(item.username){
@@ -88,10 +102,8 @@ class Update extends React.Component{
             item.company[id] = value;
         }else if(field === 'date'){
             date[id] = value;
-        }else if(field === 'phone_numbers'){
-            item.phone_numbers[index] = value;
-        }else if(field === 'phones'){
-            item.phones[index] = value;
+        }else if(field === "education"){
+            item.education[id] = value;
         }else {
             item[id] = value;
         }
@@ -101,16 +113,37 @@ class Update extends React.Component{
     toggle = () =>{
         this.props.toggle();
       }
+      addPhone = () =>{
+        var phones = this.state.phones;
+        phones.push('');
+        this.setState({phones});
+    }
+    addPhoneNumbers = () =>{
+        var phone_numbers = this.state.phone_numbers;
+        phone_numbers.push('');
+        this.setState({phone_numbers});
+    }
+    setPhone = (index,value) =>{
+        var phones = this.state.phones;
+        phones[index] = value;
+        this.setState({phones})
+    }
+    setPhoneNumbers = (index,value) =>{
+        var phone_numbers = this.state.phone_numbers;
+        phone_numbers[index] = value;
+        this.setState({phone_numbers});
+    }
     render(){
             const item = this.state.item;
+            const date = this.state.date;
         return(
             <div>
                 <Modal isOpen={true}  className={this.props.className} RTL >
-                    <ModalHeader > ویرایش کاربر  </ModalHeader>
+                    <ModalHeader > ویرایش مشتری  </ModalHeader>
                     <ModalBody>
                         <Form>
-                            <FormGroup row>
-                                <Label for="firstname" sm={3}>نام</Label>
+                        <FormGroup row>
+                                <Label for="firstname" sm={3}> نام <span className="required-star">*</span> </Label>
                                 <Col sm={9}>
                                     <Input 
                                         type="text"
@@ -121,26 +154,25 @@ class Update extends React.Component{
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label for="lastname" sm={3}>نام خانوادگی</Label>
+                                <Label for="lastname" sm={3}> نام خانوادگی <span className="required-star">*</span></Label>
                                 <Col sm={9}>
                                     <Input 
                                         type="text"
                                         name="lastname" 
-                                        id="lastname"
-                                        value={item.lastname} 
+                                        id="lastname" 
+                                        value={item.lastname}
                                         onChange={(e)=>this.changeInput(e.target.value,'lastname',false)} />
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label for="username" sm={3}>کد ملی</Label>
+                                <Label for="father_name" sm={3}> نام پدر </Label>
                                 <Col sm={9}>
                                     <Input 
                                         type="text"
-                                        name="national_code" 
-                                        id="national_code" 
-                                        maxlength="11"
-                                        value={item.national_code?item.national_code:null} 
-                                        onChange={(e)=>this.changeInput(e.target.value,'national_code',false)} />
+                                        name="father_name" 
+                                        id="father_name" 
+                                        value={item.father_name}
+                                        onChange={(e)=>this.changeInput(e.target.value,'father_name',false)} />
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
@@ -160,6 +192,31 @@ class Update extends React.Component{
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
+                                <Label for="shomare_shenasname" sm={3}> شماره شناسنامه </Label>
+                                <Col sm={9}>
+                                    <Input 
+                                        type="text"
+                                        value={item.shomare_shenasname}
+                                        name="shomare_shenasname" 
+                                        id="shomare_shenasname" 
+                                        value={item.shomare_shenasname}
+                                        onChange={(e)=>this.changeInput(e.target.value,'shomare_shenasname',false)} />
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label for="username" sm={3}> کد ملی  </Label>
+                                <Col sm={9}>
+                                    <Input 
+                                        type="text"
+                                        maxlength="11"
+                                        value={item.code_meli}
+                                        name="national_code" 
+                                        id="national_code" 
+                                        value={item.national_code}
+                                        onChange={(e)=>this.changeInput(e.target.value,'national_code',false)} />
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
                                 <Label for="username" sm={3}>تاریخ تولد</Label>
                                 <Col sm={3}>
                                     <Input 
@@ -167,6 +224,7 @@ class Update extends React.Component{
                                         placeholder="روز"
                                         name="birthday" 
                                         id="birthday" 
+                                        value={date.brithDay}
                                         onChange={(e)=>this.changeInput(e.target.value,'brithDay','date',2)} />
                                 </Col>
                                 <Col sm={3}>
@@ -175,6 +233,7 @@ class Update extends React.Component{
                                         placeholder="ماه"
                                         name="marriage_date" 
                                         id="marriage_date" 
+                                        value={date.brithMonth}
                                         onChange={(e)=>this.changeInput(e.target.value,'brithMonth','date',1)} />
                                 </Col>
                                 <Col sm={3}>
@@ -182,10 +241,71 @@ class Update extends React.Component{
                                         type="text"
                                         placeholder="سال"
                                         name="birthname" 
-                                        id="birthname" 
+                                        id="birthname"
+                                        value={date.brithYear} 
                                         onChange={(e)=>this.changeInput(e.target.value,'brithYear','date',0)} />
                                 </Col>
                             </FormGroup>
+                            <FormGroup row>
+                                <Label for="place_of_issue" sm={3}> محل صدور  </Label>
+                                <Col sm={9}>
+                                    <Input 
+                                        type="text"
+                                        maxlength="11"
+                                        name="place_of_issue" 
+                                        id="place_of_issue" 
+                                        value={item.place_of_issue}                                        
+                                        onChange={(e)=>this.changeInput(e.target.value,'place_of_issue',false)} />
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label for="field" sm={3}> رشته  </Label>
+                                <Col sm={9}>
+                                    <Input 
+                                        type="text"
+                                        maxlength="11"
+                                        name="field" 
+                                        id="field" 
+                                        value={item.education.field}
+                                        onChange={(e)=>this.changeInput(e.target.value,'field','education')} />
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label for="degree" sm={3}> مدرک تحصیلی  </Label>
+                                <Col sm={9}>
+                                    <Input 
+                                        type="text"
+                                        maxlength="11"
+                                        name="degree" 
+                                        id="degree" 
+                                        value={item.education.degree}
+                                        onChange={(e)=>this.changeInput(e.target.value,'field','education')} />                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label for="job" sm={3}> شغل  </Label>
+                                <Col sm={9}>
+                                    <Input 
+                                        type="text"
+                                        maxlength="11"
+                                        name="job" 
+                                        id="job" 
+                                        value={item.job}
+                                        onChange={(e)=>this.changeInput(e.target.value,'job',false)} />
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label for="company_name" sm={3}> نام شرکت محل کار  </Label>
+                                <Col sm={9}>
+                                    <Input 
+                                        type="text"
+                                        maxlength="11"
+                                        name="company_name" 
+                                        id="company_name" 
+                                        value={item.company_name}
+                                        onChange={(e)=>this.changeInput(e.target.value,'company_name',false)} />
+                                </Col>
+                            </FormGroup>
+                           
                             <FormGroup row>
                                 <Label for="gender" sm={3}>وضعیت تاهل</Label>
                                 <Col sm={9}>
@@ -194,6 +314,7 @@ class Update extends React.Component{
                                         type="select" 
                                         id="mariage_status" 
                                         name="mariage_status"
+                                        value={item.mariage_status}
                                         onChange={(e)=>this.changeInput( e.target.value,"mariage_status",false )} 
                                     >
                                         <option value="single"> مجرد </option>
@@ -209,7 +330,7 @@ class Update extends React.Component{
                                         placeholder="روز"
                                         name="marriage_date" 
                                         id="marriage_date" 
-                                        value={this.state.date.margingDay}
+                                        value={date.margingDay}
                                         onChange={(e)=>this.changeInput(e.target.value,'margingDay','date',2)} />
                                 </Col>
                                 <Col sm={3}>
@@ -218,7 +339,7 @@ class Update extends React.Component{
                                         placeholder="ماه"
                                         name="marriage_date" 
                                         id="marriage_date" 
-                                        value={this.state.date.margingMonth}
+                                        value={date.margingMonth}
                                         onChange={(e)=>this.changeInput(e.target.value,'margingMonth','date',1)} />
                                 </Col>
                                 <Col sm={3}>
@@ -226,13 +347,57 @@ class Update extends React.Component{
                                         type="text"
                                         placeholder="سال"
                                         name="marriage_date" 
-                                        id="marriage_date" 
-                                        value={this.state.date.margingYear}
+                                        id="marriage_date"
+                                        value={date.margingYear}
                                         onChange={(e)=>this.changeInput(e.target.value,'margingYear','date',0)} />
                                 </Col>
                             </FormGroup>
+                            {
+                                this.state.phone_numbers.map((phone,index)=>{
+                                    return (
+                                        <FormGroup row>
+                                            <Label for="phone_number" sm={3}> تلفن همراه</Label>
+                                            <Col sm={9}>
+                                                <Input 
+                                                    type="text"
+                                                    maxlength="13"
+                                                    name="phone_number" 
+                                                    id="phone_number" 
+                                                    value={phone}
+                                                    onChange={(e)=>this.setPhoneNumbers(index,e.target.value)} />
+                                            </Col>
+                                        </FormGroup>
+                                    )
+                                })
+
+                            }
+                            <FormGroup>
+                                <Button color="success" onClick={this.addPhoneNumbers}>جهت افزودن شماره موبایل کلیک کنید +</Button>
+                            </FormGroup>
+                            {
+                                this.state.phones.map((phone,index)=>{
+                                    return(
+                                        <FormGroup row>
+                                        <Label for="phone_number" sm={3}> تلفن ثابت </Label>
+                                        <Col sm={9}>
+                                            <Input 
+                                                type="text"
+                                                name="phone_number"
+                                                maxlength="13" 
+                                                id="phone_number" 
+                                                value={phone}
+                                                onChange={(e)=>this.setPhone(index,e.target.value)} />
+                                        </Col>
+                                    </FormGroup>
+                                    )
+                                })
+                            }
+                           
+                            <FormGroup>
+                                <Button color="success" onClick={this.addPhone}>جهت افزودن شماره تلفن ثابت کلیک کنید +</Button>
+                            </FormGroup>
                             <FormGroup row>
-                                <Label for="address" sm={3}>آدرس</Label>
+                                <Label for="address" sm={3}> آدرس  </Label>
                                 <Col sm={9}>
                                     <Input 
                                         type="text"
@@ -253,99 +418,43 @@ class Update extends React.Component{
                                         onChange={(e)=>this.changeInput(e.target.value,'postal_code',false)} />
                                 </Col>
                             </FormGroup>
-                            <FormGroup row>
-                                <Label for="phone_number" sm={3}> موبایل 1 </Label>
-                                <Col sm={9}>
-                                    <Input 
-                                        type="text"
-                                        maxlength="13"
-                                        name="phone_number" 
-                                        id="phone_number" 
-                                        value={item.phone_numbers[0]}
-                                        onChange={(e)=>this.changeInput(e.target.value,false,'phone_numbers',0)} />
-                                </Col>
-                            </FormGroup>
-                            <FormGroup row>
-                                <Label for="phone_number" sm={3}> موبایل 2 </Label>
-                                <Col sm={9}>
-                                    <Input 
-                                        type="text"
-                                        name="phone_number" 
-                                        id="phone_number" 
-                                        maxlength="13"
-                                        value={item.phone_numbers[1]}
-                                        onChange={(e)=>this.changeInput(e.target.value,false,'phone_numbers',1)} />
-                                </Col>
-                            </FormGroup>
-                            <FormGroup row>
-                                <Label for="phone_number" sm={3}> موبایل 3 </Label>
-                                <Col sm={9}>
-                                    <Input 
-                                        type="text"
-                                        name="phone_number" 
-                                        maxlength="13"
-                                        id="phone_number" 
-                                        value={item.phone_numbers[2]}
-                                        onChange={(e)=>this.changeInput(e.target.value,false,'phone_numbers',2)} />
-                                </Col>
-                            </FormGroup>
-                            <FormGroup row>
-                                <Label for="phone_number" sm={3}> تلفن ثابت </Label>
-                                <Col sm={9}>
-                                    <Input 
-                                        type="text"
-                                        name="phone_number" 
-                                        id="phone_number"
-                                        maxlength="13"
-                                        value={item.phones[0]} 
-                                        onChange={(e)=>this.changeInput(e.target.value,false,'phones',0)} />
-                                </Col>
-                            </FormGroup>
-                            <FormGroup row>
-                                <Label for="phone_number" sm={3}>  رشته  </Label>
-                                <Col sm={9}>
-                                    <Input 
-                                        type="text"
-                                        name="phones" 
-                                        id="phones" 
-                                        value={item.phones[1]} 
-                                        onChange={(e)=>this.changeInput(e.target.value,false,'phones',1)} />
-                                </Col>
-                            </FormGroup>
-                            <FormGroup row>
-                                <Label for="phones" sm={3}> علایق </Label>
-                                <Col sm={9}>
-                                    <Input 
-                                        type="text"
-                                        name="phones" 
-                                        id="phones" 
-                                        value={item.phones[2]} 
-                                        onChange={(e)=>this.changeInput(e.target.value,false,'phones',2)} />
-                                </Col>
-                            </FormGroup>
                             
                             
                             
+                        
                             <FormGroup row>
-                                <Label for="name" sm={3}>نام شرکت محل کار </Label>
+                                <Label for="favorites" sm={3}> علایق  </Label>
                                 <Col sm={9}>
                                     <Input 
                                         type="text"
-                                        name="name" 
-                                        id="name" 
-                                        value={item.company_name}
-                                        onChange={(e)=>this.changeInput(e.target.value,'company_name',false)} />
+                                        name="favorites" 
+                                        id="favorites" 
+                                        value={item.favorites}
+                                        onChange={(e)=>this.changeInput(e.target.value,'favorites',false)} />
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label for="phone" sm={3}> شغل  </Label>
+                                <Label for="method_of_introduction" sm={3}> نحوه آشنایی با موسسه </Label>
                                 <Col sm={9}>
-                                    <Input 
-                                        type="text"
-                                        name="phone" 
-                                        id="phone" 
-                                        value={item.job}
-                                        onChange={(e)=>this.changeInput(e.target.value,'job',false)} />
+                                    <CustomInput 
+                                        className="rtl"  
+                                        type="select" 
+                                        id="method_of_introduction" 
+                                        name="method_of_introduction"
+                                        value={item.method_of_introduction}
+                                        onChange={(e)=>this.changeInput( e.target.value,"method_of_introduction",false )} 
+                                    >
+                                        <option value="مراجعه حضوری"> مراجعه حضوری </option>
+                                        <option value="تماس تلفنی"> تماس تلفنی </option>
+                                        <option value=" مراجعه به سایت فنی و حرفه ای ">  مراجعه به سایت فنی و حرفه ای  </option>
+                                        <option value="معرفی دوستان"> معرفی دوستان </option>
+                                        <option value="تابلو آموزشگاه"> تابلو آموزشگاه </option>
+                                        <option value="118"> 118 </option>
+                                        <option value="سمینار آموزشی"> سمینار آموزشی </option>
+                                        <option value="جستجو در اینترنت"> جستجو در اینترنت </option>
+                                        <option value="سایر موراد"> سایر موراد </option>
+
+                                    </CustomInput>
                                 </Col>
                             </FormGroup>
                         </Form>

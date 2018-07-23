@@ -60,7 +60,7 @@ class Create extends React.Component{
         .then( resp => {
             var classes = [];
             resp.map((item)=>{
-                classes.push({label:item.name,value:item._id,price:item.price})
+                classes.push({label:item.name,value:item._id,price:item.price,teacher:item.teacher,category:item.category.name})
             })
             this.setState({ classes });
         })
@@ -77,7 +77,7 @@ class Create extends React.Component{
         .then( resp => {
             var customers = [];
             resp.map((item)=>{
-                customers.push({label:item.firstname+' '+item.lastname,value:item._id})
+                customers.push({label:item.firstname+' '+item.lastname,value:item._id,firstname:item.firstname,lastname:item.lastname,national_code:item.national_code})
             })
             this.setState({ customers });
         })
@@ -134,7 +134,7 @@ class Create extends React.Component{
                                 <Input type="radio" name="radio2" onChange={()=>this.setState({ type:'pos' })}/>پوز{' '}  
                             </Col>
                             <Col  sm="4">
-                                <Input type="radio" name="radio2" onChange={()=>this.setState({ type:'card2card' })}/>کارت به کارت{' '}
+                                <Input type="radio" name="radio2" onChange={()=>this.setState({ type:'cart2cart' })}/>کارت به کارت{' '}
                             </Col>
                             <Col  sm="4">
                                 <Input type="radio" name="radio2" onChange={()=>this.setState({ type:'cash' })}/>وجه نقد{' '}
@@ -247,36 +247,73 @@ class Create extends React.Component{
                     <Form>
                         <FormGroup>
                             <Label>  دانشجو  </Label>
-                            <Select
-                                id="state-select"
-                                onBlurResetsInput={false}
-                                onSelectResetsInput={false}
-                                autoFocus
-                                options={this.state.customers}
-                                clearable={this.state.clearable}
-                                name="selected-state"
-                                value={this.state.customerValue}
-                                onChange={(e)=>this.setState({customerValue:e})}
-                                rtl={true}
-                                searchable={true}
-                            />
-                        </FormGroup> 
+                            <Row>
+                                <Col md="6">
+                                    <Select
+                                        id="state-select"
+                                        onBlurResetsInput={false}
+                                        onSelectResetsInput={false}
+                                        autoFocus
+                                        options={this.state.customers}
+                                        clearable={this.state.clearable}
+                                        name="selected-state"
+                                        value={this.state.customerValue}
+                                        onChange={(e)=>this.setState({customerValue:e})}
+                                        rtl={true}
+                                        searchable={true}
+                                    />
+                                </Col>
+                                <Col md="6">
+                                    <Row>
+                                    نام : {this.state.customerValue.firstname}
+                                    </Row>
+                                    <Row>
+                                        نام خانوادگی:{this.state.customerValue.lastname}
+                                    </Row>
+                                    <Row>
+                                        کد ملی :{this.state.customerValue.national_code}
+                                    </Row>
+                                </Col>
+                            </Row>
+                            
+                            
+                        </FormGroup>
                         <FormGroup>
                             <Label>  دوره  </Label>
-                            <Select
-                                id="state-select"
-                                onBlurResetsInput={false}
-                                onSelectResetsInput={false}
-                                autoFocus
-                                options={this.state.classes}
-                                clearable={this.state.clearable}
-                                name="selected-state"
-                                value={this.state.classValue}
-                                onChange={(e)=>this.setState({classValue:e})}
-                                rtl={true}
-                                searchable={true}
-                            />
-                        </FormGroup>  
+                            <Row>
+                                <Col md="6">
+                                    <Select
+                                        id="state-select"
+                                        onBlurResetsInput={false}
+                                        onSelectResetsInput={false}
+                                        autoFocus
+                                        options={this.state.classes}
+                                        clearable={this.state.clearable}
+                                        name="selected-state"
+                                        value={this.state.classValue}
+                                        onChange={(e)=>this.setState({classValue:e})}
+                                        rtl={true}
+                                        searchable={true}
+                                    />
+                                </Col>
+                                <Col md="6">
+                                    <Row>
+                                نام دوره : {this.state.classValue.label}
+                                    </Row>
+                                    <Row>
+                                        قیمت :{this.state.classValue.price}
+                                    </Row>
+                                    <Row>
+                                        استاد :{this.state.classValue.teacher}
+                                    </Row>
+                                    <Row>
+                                        گروه :{this.state.classValue.category}
+                                    </Row>
+                                </Col>
+                            </Row>
+                            
+                            
+                        </FormGroup>   
                         <FormGroup row>
                             <Col sm="4">
                                 <Label for="radio1">نحوه پرداخت</Label>  
