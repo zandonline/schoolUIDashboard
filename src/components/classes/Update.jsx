@@ -152,17 +152,6 @@ class Update extends React.Component{
 
             <Form>
                             <FormGroup row>
-                                <Label for="name" sm={3}> نام دوره </Label>
-                                <Col sm={9}>
-                                    <Input 
-                                        type="text"
-                                        name="name" 
-                                        id="name" 
-                                        value={item.name}
-                                        onChange={(e)=>this.changeInput('name',false,e.target.value)} />
-                                </Col>
-                            </FormGroup>
-                            <FormGroup row>
                                 <Label for="teacher" sm={3}> نام و نام خانوادگی استاد</Label>
                                 <Col sm={9}>
                                     <Input 
@@ -172,29 +161,7 @@ class Update extends React.Component{
                                         value={item.teacher}
                                         onChange={(e)=>this.changeInput('teacher',false,e.target.value)} />
                                 </Col>
-                            </FormGroup>
-                            <FormGroup row>
-                                <Label for="price" sm={3}> قیمت </Label>
-                                <Col sm={9}>
-                                    <Input 
-                                        type="text"
-                                        name="price" 
-                                        id="price" 
-                                        value={item.price}
-                                        onChange={(e)=>this.changeInput('price',false,e.target.value)} />
-                                </Col>
-                            </FormGroup>
-                            <FormGroup row>
-                                <Label for="point" sm={3}> امتیازات </Label>
-                                <Col sm={9}>
-                                    <Input 
-                                        type="text"
-                                        name="point" 
-                                        id="point" 
-                                        value={item.point}
-                                        onChange={(e)=>this.changeInput('point',false,e.target.value)} />
-                                </Col>
-                            </FormGroup>
+                            </FormGroup>  
                             <FormGroup row>
                                 <Label for="gender" sm={3}>دسته بندی دوره</Label>
                                 <Col sm={9}>
@@ -218,7 +185,42 @@ class Update extends React.Component{
                                         
                                     </CustomInput>
                                 </Col>
+                            </FormGroup>  
+                            <FormGroup row>
+                                <Label for="name" sm={3}> نام دوره </Label>
+                                <Col sm={9}>
+                                    <Input 
+                                        type="text"
+                                        name="name" 
+                                        id="name" 
+                                        value={item.name}
+                                        onChange={(e)=>this.changeInput('name',false,e.target.value)} />
+                                </Col>
                             </FormGroup>
+                            <FormGroup row>
+                                <Label for="point" sm={3}> امتیازات </Label>
+                                <Col sm={9}>
+                                    <Input 
+                                        type="text"
+                                        name="point" 
+                                        id="point" 
+                                        value={item.point}
+                                        onChange={(e)=>this.changeInput('point',false,e.target.value)} />
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label for="price" sm={3}> قیمت </Label>
+                                <Col sm={9}>
+                                    <Input 
+                                        type="text"
+                                        name="price" 
+                                        id="price" 
+                                        value={item.price}
+                                        onChange={(e)=>this.changeInput('price',false,e.target.value)} />
+                                </Col>
+                            </FormGroup>
+                            
+                            
                             <FormGroup row>
                                 <Label for="stateDate" sm={3}>تاریخ  شروع </Label>
                                 <Col sm={3}>

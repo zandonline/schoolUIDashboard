@@ -34,6 +34,7 @@ class Update extends React.Component{
                 brithMonth:'',
                 brithDay:'',
             },
+            other:false,
             phones:this.props.item.phones.length === 0?['']:this.props.item.phones,
             phone_numbers:this.props.item.phone_numbers
             };
@@ -73,6 +74,8 @@ class Update extends React.Component{
          item.phones = this.state.phones;
          item.password = item.phone_numbers[0]; 
          item.username = item.phone_numbers[0];
+         item.method_of_introduction = item.method_of_introduction === '1'?this.state.other:item.method_of_introduction;
+
             if(item.username){
             axios({ method: 'PATCH', url: `${URL}customers/${this.state.item._id}`,headers: {
                 "accept":"application/json",
@@ -452,11 +455,24 @@ class Update extends React.Component{
                                         <option value="118"> 118 </option>
                                         <option value="سمینار آموزشی"> سمینار آموزشی </option>
                                         <option value="جستجو در اینترنت"> جستجو در اینترنت </option>
-                                        <option value="سایر موراد"> سایر موراد </option>
+                                        <option value="1"> سایر موراد </option>
 
                                     </CustomInput>
                                 </Col>
                             </FormGroup>
+                            {
+                                this.state.item.method_of_introduction === '1'?
+                                <FormGroup row>
+                                <Label for="favorites" sm={3}> سایر موارد  </Label>
+                                <Col sm={9}>
+                                    <Input 
+                                        type="text"
+                                        name="favorites" 
+                                        id="favorites" 
+                                        onChange={(e)=>this.setState({other:e.target.value}) }/>
+                                </Col>
+                            </FormGroup>:null
+                            }
                         </Form>
                         
                     </ModalBody>

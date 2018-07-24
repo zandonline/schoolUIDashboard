@@ -202,7 +202,7 @@ class Create extends React.Component{
                                     )
                                 } )
                             }
-                <Button color="success" onClick={this.addChek}>جهت افزودن روزهای دیگر کلیک کنید +</Button>
+                <Button color="success" onClick={this.addChek}>جهت افزودن اقساط دیگر کلیک کنید +</Button>
                 <br/>
             </div>
             )

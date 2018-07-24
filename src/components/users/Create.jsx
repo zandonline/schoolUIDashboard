@@ -40,11 +40,13 @@ class Create extends React.Component{
                     "degree": "پیش فرض"
                 },
                 phone_numbers:[],
+                method_of_introduction:""
             },
             phones:[''],
             phone_numbers:[''],
             errorAddItem:false,
             success:false,
+            other:false,
             date:{
                 margingYear:'',
                 margingMonth:'',
@@ -72,6 +74,7 @@ class Create extends React.Component{
          item.phones = this.state.phones;
          item.password = item.phone_numbers[0]; 
          item.username = item.phone_numbers[0];
+         item.method_of_introduction = item.method_of_introduction === '1'?this.state.other:item.method_of_introduction;
             if(item.username && item.password !== null && item.firstname && item.lastname){
             axios({ method: 'POST', url: `${URL}customers`,headers: {
                 "accept":"application/json",
@@ -432,11 +435,24 @@ class Create extends React.Component{
                                         <option value="118"> 118 </option>
                                         <option value="سمینار آموزشی"> سمینار آموزشی </option>
                                         <option value="جستجو در اینترنت"> جستجو در اینترنت </option>
-                                        <option value="سایر موراد"> سایر موراد </option>
+                                        <option value="1"> سایر موراد </option>
 
                                     </CustomInput>
                                 </Col>
                             </FormGroup>
+                            {
+                                this.state.item.method_of_introduction === '1'?
+                                <FormGroup row>
+                                <Label for="favorites" sm={3}> سایر موارد  </Label>
+                                <Col sm={9}>
+                                    <Input 
+                                        type="text"
+                                        name="favorites" 
+                                        id="favorites" 
+                                        onChange={(e)=>this.setState({other:e.target.value}) }/>
+                                </Col>
+                            </FormGroup>:null
+                            }
                         </Form>
                     
                         <Button  style={{ width:"100%" }} color="primary" onClick={this.addItem} >ثبت</Button>{' '}

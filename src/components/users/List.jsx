@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, Table, Button } from 'reactstrap';
+import { Container, Row, Col, Table, Button,FormGroup,Label,Input } from 'reactstrap';
 import { URL,TOKEN } from '../../constants/api';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 import Create from './Create';
 import Update from './Update';
 import Delete from './Delete';
+import Payments from './Payments';
+
 class List extends Component {
   constructor(props) {
     super(props); 
@@ -15,6 +17,8 @@ class List extends Component {
        page:1,
        hasMore:true,
        itemSelected:false,
+       firstname:'',
+       lastname:''
      };
   }
   componentDidMount(){
@@ -23,8 +27,8 @@ class List extends Component {
   nextPage = ()=>{
     this.getItems(this.state.page);
   }
-  getItems =(page)=> {
-      fetch(`${URL}customers?pagesize=20&pagenum=${page}`,{
+  getItems =(page,search)=> {
+      fetch(`${URL}customers?pagesize=20&pagenum=${page}&firstname=${this.state.firstname}&lastname=${this.state.lastname}`,{
           method:'GET',
           headers:{
               "Authorization":`Bearer ${TOKEN}`
@@ -32,17 +36,17 @@ class List extends Component {
       })
       .then( resp => resp.json() )
       .then( resp => {
+        var items =search?[]: this.state.items;
         if(resp.length === 0){
           console.log(resp);
           this.setState({status:'',hasMore:false});
         }else{
-          var items = this.state.items;
           resp.map(res=>{
             items.push(res)
           })
           this.setState({ items , status:'',page:this.state.page+1 });
         }
-        
+        this.setState({items})
       })
       .catch( err =>{
           console.log(err);
@@ -57,7 +61,7 @@ class List extends Component {
     })
     .then(resp => {
         if(resp.status === 200){
-            this.getItems(1);
+            this.getItems(1,true);
             
         }
     })
@@ -77,13 +81,52 @@ class List extends Component {
         case "delete":
             return <Delete toggle={()=> this.setState({status:''})}
                 deleteItem={()=>this.deleteItem(this.state.itemSelected)}/>;
+        case "payments":
+        return <Payments toggle={()=> this.setState({status:''})}
+            id={this.state.itemSelected}/>;
         default:
             return <div/>;
     }
   }
   render() {
-    let items =(
-      <Table hover style={{ textAlign:'center' }}>
+    return (
+      <Container>
+        {
+          this.renderBox(this.state.status)
+        }
+        <br/>
+        <Row>
+        <FormGroup row>
+          <Label for="firstname" sm={2}> نام</Label>
+            <Col sm={4}>
+              <Input 
+                type="text"
+                name="firstname" 
+                id="firstname" 
+                onChange={(e)=>this.setState({firstname:e.target.value},()=>{
+                  this.getItems(1,true);
+                })} />
+            </Col>
+            <Label for="lastname" sm={2}> نام خانوادگی </Label>
+            <Col sm={4}>
+              <Input 
+                type="text"
+                name="lastname" 
+                id="lastname" 
+                onChange={(e)=>this.setState({lastname:e.target.value},()=>{
+                  this.getItems(1,true);
+                })} />            </Col>
+        </FormGroup>
+        </Row>
+        <Row>
+        <Col>
+        <InfiniteScroll
+          dataLength={this.state.items.length}
+          next={this.nextPage}
+          hasMore={true}
+          loader={<h4>Loading...</h4>}
+        >
+        <Table hover style={{ textAlign:'center' }}>
             <thead>
                 <tr>
                   <th>ردیف</th>
@@ -94,17 +137,19 @@ class List extends Component {
                 </tr>
               </thead>
               <tbody>
-              {
-                this.state.items?
-    this.state.items.map( (item,index) =>{
-      return (
-        <tr>
+          
+          {this.state.items.map((item, index) => (
+            <tr>
           <th scope="row">{index+1}</th>
           <td>{item.firstname+' '+item.lastname}</td>
           <td>{item.phone_numbers[0]}</td>
           <td>{item.received_point}</td>
           <td>
               <Row>
+                  <Col>
+                    <Button  outline size="sm" color="primary" block
+                             onClick={()=>this.setState({ status:"payments",itemSelected:item._id})} >پرداخت ها</Button>
+                  </Col>
                   <Col>
                     <Button  outline size="sm" color="success" block
                              onClick={()=>this.setState({ status:"update",itemSelected:index})} >ویرایش</Button>
@@ -116,30 +161,13 @@ class List extends Component {
               </Row>
         </td>                     
         </tr>
-      )
-    } ) :null
-              }
-            </tbody>
-        </Table>
-    ) 
-    items = (<div>
-      <InfiniteScroll
-                scrollThreshold={0.6}
-                next={this.nextPage}
-                hasMore={true}>
-                {items}    
-              </InfiniteScroll>
-              </div>)
-    return (
-      <Container>
-        {
-          this.renderBox(this.state.status)
-        }
-        <br/>
-        <br/>
-        {items}
-        <Row>
-          
+       
+
+          ))} 
+          </tbody>
+          </Table>
+        </InfiniteScroll>            
+  </Col>
         </Row>
       </Container>
     );
