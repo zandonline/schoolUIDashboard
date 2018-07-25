@@ -3,6 +3,8 @@ import { URL,TOKEN } from '../../constants/api';
 import axios from 'axios';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
+import CurrencyInput from 'react-currency-input';
+
 
 import { 
     Button,
@@ -35,12 +37,12 @@ class Create extends React.Component{
             pay:true,
             errorAddItem:false,
             success:false,
-            amount:false,
+            amount:0,
             cheks:[
                 {
                     type:'check',
                     status:'pending',
-                    amount:'',
+                    amount:0,
                     check_number:'',
                     chekYear:'',
                     chekMonth:'',
@@ -128,10 +130,10 @@ class Create extends React.Component{
       }
     renderTransaction=()=>{
         if( this.state.pay ){
-            return  (
+            return  (   <div>
                         <FormGroup row>
                             <Col sm="4">
-                                <Input type="radio" name="radio2" onChange={()=>this.setState({ type:'pos' })}/>پوز{' '}  
+                                <Input type="radio" name="radio2" onChange={()=>this.setState({ type:'pos' })}/>Pose{' '}  
                             </Col>
                             <Col  sm="4">
                                 <Input type="radio" name="radio2" onChange={()=>this.setState({ type:'cart2cart' })}/>کارت به کارت{' '}
@@ -139,18 +141,38 @@ class Create extends React.Component{
                             <Col  sm="4">
                                 <Input type="radio" name="radio2" onChange={()=>this.setState({ type:'cash' })}/>وجه نقد{' '}
                             </Col>
-                        </FormGroup> 
+                        </FormGroup>{this.state.type ==='cart2cart' || this.state.type ==='pos'?
+                        <FormGroup row>
+                                <Label for="teacher" sm={3}>شماره رهگیری</Label>
+                                <Col sm={9}>
+                                    <Input 
+                                        type="text"
+                                        name="teacher" 
+                                        id="teacher" 
+                                        onChange={console.log("add")} />
+                                </Col>
+                        </FormGroup>:null }
+                        </div> 
             )
         }else{
+            var re = /,/gi; 
+            var str = this.state.amount.toString(); 
+            var newstr = str.replace(re,''); 
+            var total =  parseInt(newstr);
+            this.state.cheks.map((item)=>{
+                total=total+parseInt(item.amount.toString().replace(re,''))
+            })
+            console.log(total)
             return (
                 <div>
+                {total.toLocaleString()}
                 <FormGroup>
                     <Label for="prepayment" > پیش پرداخت </Label>
-                        <Input 
-                        type="text"
-                        name="prepayment" 
-                        id="prepayment" 
-                        onChange={(e)=>this.setState({ amount:e.target.value })} />
+                        <CurrencyInput 
+                            className="form-control"
+                            precision="0"
+                            value={this.state.amount}
+                            onChangeEvent={(e)=>this.setState({ amount:e.target.value })} />
                 </FormGroup>
                 {
                                 this.state.cheks.map( (item,index)=>{
@@ -158,11 +180,11 @@ class Create extends React.Component{
                                         <div>
                                         <FormGroup>
                                             <Label for="amount" > مبلغ قسط </Label>
-                                                <Input 
-                                                type="text"
-                                                name="amount" 
-                                                id="amount" 
-                                                onChange={(e)=>this.chekSet(index,'amount',e.target.value)} />
+                                                <CurrencyInput 
+                                                    className="form-control"
+                                                    precision="0"
+                                                    value={item.amount}
+                                                    onChangeEvent={(e)=>this.chekSet(index,'amount',e.target.value)} />
                                         </FormGroup>
                                         <FormGroup row style={{ fontSize:"13px" }}>
                                             <Col sm={2}>
@@ -229,7 +251,7 @@ class Create extends React.Component{
         var cheks = this.state.cheks;
         cheks.push({type:'check',
             status:'pending',
-            amount:'',
+            amount:0,
             check_number:'',
             chekYear:'',
             chekMonth:'',
@@ -237,10 +259,10 @@ class Create extends React.Component{
         this.setState({cheks});
     }
     render(){
+        
         if(!this.state.customers || !this.state.classes){
-            return <div/>
+            return <div> در حال دریافت اطلاعات مشتریان و کلاس ها ... </div>
         }
-        console.log("classes",this.state);
         return(
             <div>
                 <div style={{ width:"40%" }}>
@@ -319,12 +341,14 @@ class Create extends React.Component{
                                 <Label for="radio1">نحوه پرداخت</Label>  
                             </Col>
                             <Col  sm="4">
-                                <Input type="radio" name="radio1" onChange={()=>this.setState({ pay:true })}/>نقدی{' '}
+                                <Input type="radio" name="radio1" checked={this.state.pay} onChange={()=>this.setState({ pay:true })}/>نقدی{' '}
                             </Col>
                             <Col  sm="4">
                                 <Input type="radio" name="radio1" onChange={()=>this.setState({ pay:false })}/>اقساطی{' '}
                             </Col>
-                        </FormGroup>  
+                        </FormGroup> 
+                    
+                         
                         { this.renderTransaction() }
 
                     </Form>
