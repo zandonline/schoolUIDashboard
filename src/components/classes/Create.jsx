@@ -1,7 +1,7 @@
 import React from 'react';
 import { URL,TOKEN } from '../../constants/api';
 import axios from 'axios';
-
+import CurrencyInput from 'react-currency-input';
 import { 
     Modal,
     ModalHeader,
@@ -32,7 +32,7 @@ class Create extends React.Component{
                 "teacher": "",
                 "point": 0,
                 "credit": 0,
-                "price": 0,
+                "price": '3465465465465',
                 
             },
             errorAddItem:false,
@@ -197,11 +197,12 @@ class Create extends React.Component{
                             <FormGroup row>
                                 <Label for="price" sm={3}> قیمت </Label>
                                 <Col sm={9}>
-                                    <Input 
-                                        type="text"
-                                        name="price" 
-                                        id="price" 
-                                        onChange={(e)=>this.changeInput('price',false,e.target.value)} />
+                                    <CurrencyInput 
+                                        value={this.state.item.price} 
+                                        precision="0" 
+                                        onChangeEvent={(e)=>this.changeInput('price',false,e.target.value)}
+                                        className="form-control"   
+                                    />
                                 </Col>
                             </FormGroup>
                             

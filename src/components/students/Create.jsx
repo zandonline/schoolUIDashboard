@@ -3,6 +3,8 @@ import { URL,TOKEN } from '../../constants/api';
 import axios from 'axios';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
+import CurrencyInput from 'react-currency-input';
+
 
 import { 
     Button,
@@ -28,6 +30,7 @@ class Create extends React.Component{
                 }],
             },
             type:false,
+            card_num:'',
             customers:false,
             customerValue:false,
             classes:false,
@@ -35,12 +38,12 @@ class Create extends React.Component{
             pay:true,
             errorAddItem:false,
             success:false,
-            amount:false,
+            amount:0,
             cheks:[
                 {
                     type:'check',
                     status:'pending',
-                    amount:'',
+                    amount:0,
                     check_number:'',
                     chekYear:'',
                     chekMonth:'',
@@ -48,6 +51,25 @@ class Create extends React.Component{
                 }
             ],
             };
+    }
+    getCustomer = () => {
+        fetch(`${URL}customers?select=firstname=1,lastname=1,national_code=1`,{
+            method:'GET',
+            headers:{
+                "Authorization":`Bearer ${TOKEN}`
+            }
+        })
+        .then( resp => resp.json() )
+        .then( resp => {
+            var customers = [];
+            resp.map((item)=>{
+                customers.push({label:item.firstname+' '+item.lastname,value:item._id,firstname:item.firstname,lastname:item.lastname,national_code:item.national_code})
+            })
+            this.setState({ customers });
+        })
+        .catch( err =>{
+            console.log(err);
+        });
     }
     componentDidMount(){
         fetch(`${URL}class`,{
@@ -67,36 +89,23 @@ class Create extends React.Component{
         .catch( err =>{
             console.log(err);
         });
-        fetch(`${URL}customers`,{
-            method:'GET',
-            headers:{
-                "Authorization":`Bearer ${TOKEN}`
-            }
-        })
-        .then( resp => resp.json() )
-        .then( resp => {
-            var customers = [];
-            resp.map((item)=>{
-                customers.push({label:item.firstname+' '+item.lastname,value:item._id,firstname:item.firstname,lastname:item.lastname,national_code:item.national_code})
-            })
-            this.setState({ customers });
-        })
-        .catch( err =>{
-            console.log(err);
-        });
+        this.getCustomer();
+        
     }
     addItem = () => {
         this.setState({errorAddItem:false,success:false})
         var item = this.state.item;
         item.customerid = this.state.customerValue.value;
         item.transactions =[];
+        var re = /,/gi; 
+        item.card_num = this.state.card_num;
             if(this.state.pay){
                 item.transactions[0]={type:this.state.type,status:'payed',amount:this.state.classValue.price};
             }else{
-                item.transactions[0]={type:'cash',status:'payed',amount:parseInt(this.state.amount)};
+                item.transactions[0]={type:'cash',status:'payed',amount:parseInt(this.state.amount.toString().replace(re,''))};
                 this.state.cheks.map((t)=>{
                     t.due_date = t.chekYear+"/"+t.chekMonth+"/"+t.chekDay;
-                    item.transactions.push({due_date:t.due_date,type:t.type,amount:parseInt(t.amount),status:t.status,check_number:t.check_number});
+                    item.transactions.push({due_date:t.due_date,type:t.type,amount:parseInt(t.amount.toString().replace(re,'')),status:t.status,check_number:t.check_number});
                 })
                 
             }
@@ -128,10 +137,10 @@ class Create extends React.Component{
       }
     renderTransaction=()=>{
         if( this.state.pay ){
-            return  (
+            return  (   <div>
                         <FormGroup row>
                             <Col sm="4">
-                                <Input type="radio" name="radio2" onChange={()=>this.setState({ type:'pos' })}/>پوز{' '}  
+                                <Input type="radio" name="radio2" onChange={()=>this.setState({ type:'pos' })}/>Pose{' '}  
                             </Col>
                             <Col  sm="4">
                                 <Input type="radio" name="radio2" onChange={()=>this.setState({ type:'cart2cart' })}/>کارت به کارت{' '}
@@ -139,20 +148,39 @@ class Create extends React.Component{
                             <Col  sm="4">
                                 <Input type="radio" name="radio2" onChange={()=>this.setState({ type:'cash' })}/>وجه نقد{' '}
                             </Col>
-                        </FormGroup> 
+                        </FormGroup>{this.state.type ==='cart2cart' || this.state.type ==='pos'?
+                        <FormGroup row>
+                                <Label for="teacher" sm={3}>شماره رهگیری</Label>
+                                <Col sm={9}>
+                                    <Input 
+                                        type="text"
+                                        name="teacher" 
+                                        id="teacher" 
+                                        onChange={(e)=>this.setState({card_num:e.target.value})} />
+                                </Col>
+                        </FormGroup>:null }
+                        </div> 
             )
         }else{
+            var re = /,/gi; 
+            var str = this.state.amount.toString(); 
+            var newstr = str.replace(re,''); 
+            var sum =  parseInt(newstr);
+            this.state.cheks.map((item)=>{
+                sum=sum+parseInt(item.amount.toString().replace(re,''))
+            })
+            var total = parseInt(this.state.classValue.price) - sum;
+            console.log(total)
             return (
                 <div>
+                باقیمانده : {total.toLocaleString() }
                 <FormGroup>
                     <Label for="prepayment" > پیش پرداخت </Label>
-                        <Input 
-                        type="text"
-                        name="prepayment" 
-                        id="prepayment" 
-                        onChange={(e)=>this.setState({ amount:e.target.value })} />
-                    نام خانوادگی:{this.state.customerValue.lastname}
-
+                        <CurrencyInput 
+                            className="form-control"
+                            precision="0"
+                            value={this.state.amount}
+                            onChangeEvent={(e)=>this.setState({ amount:e.target.value })} />
                 </FormGroup>
                 {
                                 this.state.cheks.map( (item,index)=>{
@@ -160,14 +188,14 @@ class Create extends React.Component{
                                         <div>
                                         <FormGroup>
                                             <Label for="amount" > مبلغ قسط </Label>
-                                                <Input 
-                                                type="number"
-                                                name="amount" 
-                                                id="amount" 
-                                                onChange={(e)=>this.chekSet(index,'amount',e.target.value)} />
+                                                <CurrencyInput 
+                                                    className="form-control"
+                                                    precision="0"
+                                                    value={item.amount}
+                                                    onChangeEvent={(e)=>this.chekSet(index,'amount',e.target.value)} />
                                         </FormGroup>
                                         <FormGroup row style={{ fontSize:"13px" }}>
-                                            <Col sm={3}>
+                                            <Col sm={2}>
                                                 <Input 
                                                     type="text"
                                                     placeholder="روز"
@@ -175,15 +203,15 @@ class Create extends React.Component{
                                                     id="endYear" 
                                                     onChange={(e)=>this.chekSet(index,'chekDay',e.target.value)} />
                                             </Col>
-                                            <Col sm={3}>
+                                            <Col sm={2}>
                                                 <Input 
-                                                    type="number"
+                                                    type="text"
                                                     placeholder="ماه"
                                                     name="endMonth" 
                                                     id="endMonth" 
                                                     onChange={(e)=>this.chekSet(index,'chekMonth',e.target.value)} />
                                             </Col>
-                                            <Col sm={4}>
+                                            <Col sm={3}>
                                                 <Input 
                                                     type="text"
                                                     placeholder="سال"
@@ -191,7 +219,7 @@ class Create extends React.Component{
                                                     id="endYear" 
                                                     onChange={(e)=>this.chekSet(index,'chekYear',e.target.value)} />
                                             </Col>
-                                            <Col sm={6}>
+                                            <Col sm={5}>
                                                 <Input 
                                                     type="text"
                                                     name="name"
@@ -231,7 +259,7 @@ class Create extends React.Component{
         var cheks = this.state.cheks;
         cheks.push({type:'check',
             status:'pending',
-            amount:'',
+            amount:0,
             check_number:'',
             chekYear:'',
             chekMonth:'',
@@ -239,10 +267,10 @@ class Create extends React.Component{
         this.setState({cheks});
     }
     render(){
+        
         if(!this.state.customers || !this.state.classes){
-            return <div/>
+            return <div> در حال دریافت اطلاعات مشتریان و کلاس ها ... </div>
         }
-        console.log("classes",this.state);
         return(
             <div>
                 <div style={{ width:"40%" }}>
@@ -321,12 +349,14 @@ class Create extends React.Component{
                                 <Label for="radio1">نحوه پرداخت</Label>  
                             </Col>
                             <Col  sm="4">
-                                <Input type="radio" name="radio1" onChange={()=>this.setState({ pay:true })}/>نقدی{' '}
+                                <Input type="radio" name="radio1" checked={this.state.pay} onChange={()=>this.setState({ pay:true })}/>نقدی{' '}
                             </Col>
                             <Col  sm="4">
                                 <Input type="radio" name="radio1" onChange={()=>this.setState({ pay:false })}/>اقساطی{' '}
                             </Col>
-                        </FormGroup>  
+                        </FormGroup> 
+                    
+                         
                         { this.renderTransaction() }
 
                     </Form>
