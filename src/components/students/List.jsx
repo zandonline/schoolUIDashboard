@@ -99,7 +99,7 @@ class List extends Component {
                       <td>{item.class.enddate}</td>
                       <td>{item.type}</td>        
                       <td>{item.amount}</td>   
-                      <td>{item.payment_date}</td>  
+                      <td>{item.payment_date || item.due_date}</td>  
                       <td>
                           <Row>
                               <Col>
