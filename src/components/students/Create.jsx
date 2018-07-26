@@ -151,6 +151,8 @@ class Create extends React.Component{
                         name="prepayment" 
                         id="prepayment" 
                         onChange={(e)=>this.setState({ amount:e.target.value })} />
+                    نام خانوادگی:{this.state.customerValue.lastname}
+
                 </FormGroup>
                 {
                                 this.state.cheks.map( (item,index)=>{
@@ -159,13 +161,13 @@ class Create extends React.Component{
                                         <FormGroup>
                                             <Label for="amount" > مبلغ قسط </Label>
                                                 <Input 
-                                                type="text"
+                                                type="number"
                                                 name="amount" 
                                                 id="amount" 
                                                 onChange={(e)=>this.chekSet(index,'amount',e.target.value)} />
                                         </FormGroup>
                                         <FormGroup row style={{ fontSize:"13px" }}>
-                                            <Col sm={2}>
+                                            <Col sm={3}>
                                                 <Input 
                                                     type="text"
                                                     placeholder="روز"
@@ -173,15 +175,15 @@ class Create extends React.Component{
                                                     id="endYear" 
                                                     onChange={(e)=>this.chekSet(index,'chekDay',e.target.value)} />
                                             </Col>
-                                            <Col sm={2}>
+                                            <Col sm={3}>
                                                 <Input 
-                                                    type="text"
+                                                    type="number"
                                                     placeholder="ماه"
                                                     name="endMonth" 
                                                     id="endMonth" 
                                                     onChange={(e)=>this.chekSet(index,'chekMonth',e.target.value)} />
                                             </Col>
-                                            <Col sm={3}>
+                                            <Col sm={4}>
                                                 <Input 
                                                     type="text"
                                                     placeholder="سال"
@@ -189,7 +191,7 @@ class Create extends React.Component{
                                                     id="endYear" 
                                                     onChange={(e)=>this.chekSet(index,'chekYear',e.target.value)} />
                                             </Col>
-                                            <Col sm={5}>
+                                            <Col sm={6}>
                                                 <Input 
                                                     type="text"
                                                     name="name"
