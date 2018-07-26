@@ -50,10 +50,15 @@ class Payments extends React.Component {
                 <tbody>
                 {      this.state.items?
                     this.state.items.map((item,index)=>{
+                        this.state.paymentDate = item.payment_date;
+                        if (!item.payment_date) {
+                            this.state.paymentDate = item.due_date;
+
+                        }
                     return(
                         <tr>
                             <th scope="row">{index+1}</th>
-                            <td>{item.payment_date}</td>
+                            <td>{this.state.paymentDate}</td>
                             <td>{item.amount}</td>
                             <td>{item.status === 'payed'?"پرداخت شده":"پرداخت نشده"}</td>
                         </tr>

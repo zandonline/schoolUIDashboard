@@ -195,15 +195,16 @@ class Create extends React.Component{
                                                     onChangeEvent={(e)=>this.chekSet(index,'amount',e.target.value)} />
                                         </FormGroup>
                                         <FormGroup row style={{ fontSize:"13px" }}>
-                                            <Col sm={2}>
+                                            <Col sm={12} md={3}>
                                                 <Input 
                                                     type="text"
                                                     placeholder="روز"
                                                     name="endYear" 
-                                                    id="endYear" 
+                                                    id="endYear"
+
                                                     onChange={(e)=>this.chekSet(index,'chekDay',e.target.value)} />
                                             </Col>
-                                            <Col sm={2}>
+                                            <Col sm={12} md={3}>
                                                 <Input 
                                                     type="text"
                                                     placeholder="ماه"
@@ -211,7 +212,7 @@ class Create extends React.Component{
                                                     id="endMonth" 
                                                     onChange={(e)=>this.chekSet(index,'chekMonth',e.target.value)} />
                                             </Col>
-                                            <Col sm={3}>
+                                            <Col sm={12} md={6}>
                                                 <Input 
                                                     type="text"
                                                     placeholder="سال"
@@ -219,7 +220,7 @@ class Create extends React.Component{
                                                     id="endYear" 
                                                     onChange={(e)=>this.chekSet(index,'chekYear',e.target.value)} />
                                             </Col>
-                                            <Col sm={5}>
+                                            <Col sm={12} md={12}>
                                                 <Input 
                                                     type="text"
                                                     name="name"
