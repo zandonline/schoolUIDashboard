@@ -143,7 +143,7 @@ class List extends Component {
           <th scope="row">{index+1}</th>
           <td>{item.firstname+' '+item.lastname}</td>
           <td>{item.phone_numbers[0]}</td>
-          <td>{item.received_point}</td>
+          <td>{Math.round(item.received_point)}</td>
           <td>
               <Row>
                   <Col>

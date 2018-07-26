@@ -30,6 +30,7 @@ class Create extends React.Component{
                 }],
             },
             type:false,
+            card_num:'',
             customers:false,
             customerValue:false,
             classes:false,
@@ -51,6 +52,25 @@ class Create extends React.Component{
             ],
             };
     }
+    getCustomer = () => {
+        fetch(`${URL}customers?select=firstname=1,lastname=1,national_code=1`,{
+            method:'GET',
+            headers:{
+                "Authorization":`Bearer ${TOKEN}`
+            }
+        })
+        .then( resp => resp.json() )
+        .then( resp => {
+            var customers = [];
+            resp.map((item)=>{
+                customers.push({label:item.firstname+' '+item.lastname,value:item._id,firstname:item.firstname,lastname:item.lastname,national_code:item.national_code})
+            })
+            this.setState({ customers });
+        })
+        .catch( err =>{
+            console.log(err);
+        });
+    }
     componentDidMount(){
         fetch(`${URL}class`,{
             method:'GET',
@@ -69,36 +89,23 @@ class Create extends React.Component{
         .catch( err =>{
             console.log(err);
         });
-        fetch(`${URL}customers`,{
-            method:'GET',
-            headers:{
-                "Authorization":`Bearer ${TOKEN}`
-            }
-        })
-        .then( resp => resp.json() )
-        .then( resp => {
-            var customers = [];
-            resp.map((item)=>{
-                customers.push({label:item.firstname+' '+item.lastname,value:item._id,firstname:item.firstname,lastname:item.lastname,national_code:item.national_code})
-            })
-            this.setState({ customers });
-        })
-        .catch( err =>{
-            console.log(err);
-        });
+        this.getCustomer();
+        
     }
     addItem = () => {
         this.setState({errorAddItem:false,success:false})
         var item = this.state.item;
         item.customerid = this.state.customerValue.value;
         item.transactions =[];
+        var re = /,/gi; 
+        item.card_num = this.state.card_num;
             if(this.state.pay){
                 item.transactions[0]={type:this.state.type,status:'payed',amount:this.state.classValue.price};
             }else{
-                item.transactions[0]={type:'cash',status:'payed',amount:parseInt(this.state.amount)};
+                item.transactions[0]={type:'cash',status:'payed',amount:parseInt(this.state.amount.toString().replace(re,''))};
                 this.state.cheks.map((t)=>{
                     t.due_date = t.chekYear+"/"+t.chekMonth+"/"+t.chekDay;
-                    item.transactions.push({due_date:t.due_date,type:t.type,amount:parseInt(t.amount),status:t.status,check_number:t.check_number});
+                    item.transactions.push({due_date:t.due_date,type:t.type,amount:parseInt(t.amount.toString().replace(re,'')),status:t.status,check_number:t.check_number});
                 })
                 
             }
@@ -149,7 +156,7 @@ class Create extends React.Component{
                                         type="text"
                                         name="teacher" 
                                         id="teacher" 
-                                        onChange={console.log("add")} />
+                                        onChange={(e)=>this.setState({card_num:e.target.value})} />
                                 </Col>
                         </FormGroup>:null }
                         </div> 
@@ -158,14 +165,15 @@ class Create extends React.Component{
             var re = /,/gi; 
             var str = this.state.amount.toString(); 
             var newstr = str.replace(re,''); 
-            var total =  parseInt(newstr);
+            var sum =  parseInt(newstr);
             this.state.cheks.map((item)=>{
-                total=total+parseInt(item.amount.toString().replace(re,''))
+                sum=sum+parseInt(item.amount.toString().replace(re,''))
             })
+            var total = parseInt(this.state.classValue.price) - sum;
             console.log(total)
             return (
                 <div>
-                {total.toLocaleString()}
+                باقیمانده : {total.toLocaleString() }
                 <FormGroup>
                     <Label for="prepayment" > پیش پرداخت </Label>
                         <CurrencyInput 
