@@ -207,8 +207,8 @@ class Create extends React.Component{
                                         onChange={(e)=>this.changeInput(e.target.value,'national_code',false)} />
                                 </Col>
                             </FormGroup>
-                            <FormGroup row>
-                                <Label for="username" sm={3}>تاریخ تولد</Label>
+                            <FormGroup row style={{ fontSize:"12px" }}>
+                                <Label for="username" sm={2} >تاریخ تولد</Label>
                                 <Col sm={3}>
                                     <Input 
                                         type="text"
@@ -225,7 +225,7 @@ class Create extends React.Component{
                                         id="marriage_date" 
                                         onChange={(e)=>this.changeInput(e.target.value,'brithMonth','date',1)} />
                                 </Col>
-                                <Col sm={3}>
+                                <Col sm={4}>
                                     <Input 
                                         type="text"
                                         placeholder="سال"
@@ -305,7 +305,7 @@ class Create extends React.Component{
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label for="username" sm={3}>تاریخ ازدواج</Label>
+                                <Label for="username" sm={2} style={{ fontSize:"12px" }}>تاریخ ازدواج</Label>
                                 <Col sm={3}>
                                     <Input 
                                         type="text"
@@ -322,7 +322,7 @@ class Create extends React.Component{
                                         id="marriage_date" 
                                         onChange={(e)=>this.changeInput(e.target.value,'margingMonth','date',1)} />
                                 </Col>
-                                <Col sm={3}>
+                                <Col sm={4}>
                                     <Input 
                                         type="text"
                                         placeholder="سال"

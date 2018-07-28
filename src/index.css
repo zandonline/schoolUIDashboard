@@ -22,3 +22,6 @@ body {
   height: 500px;
   margin: auto;
 }
+a:hover{
+  text-decoration: none;
+}

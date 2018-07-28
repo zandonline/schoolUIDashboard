@@ -11,7 +11,7 @@ class Payments extends React.Component {
     };
   }
   componentDidMount (){
-    fetch(`${URL}transaction?customerid=${this.props.id}`,{
+    fetch(`${URL}transaction?customerid=${this.props.match.params.id}`,{
         method:'GET',
         headers:{
             "Authorization":`Bearer ${TOKEN}`
@@ -30,14 +30,32 @@ class Payments extends React.Component {
   toggle =()=> {
     this.props.toggle();
   }
+  paymentTransaction = (id) => {
+    fetch(`${URL}transaction/${id}/payed`,{
+        method:'POST',
+        headers:{
+            "Content-Type":"application/json",
+            "Authorization":`Bearer ${TOKEN}`
+        }
+    })
+    .then (resp => {
+        if(resp.status === 200){
+            window.location.reload();
+        }
+    })
+    .catch(err => console.log(err));
+  }
 
   render() {
-      console.log(this.state)
+      if( !this.state.items ){
+          return (
+              <div>
+                  در حال دریافت اطلاعات از سرور ....
+              </div>
+           )
+      }
     return (
       <div>
-        <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-          <ModalHeader toggle={this.toggle}>پرداخت ها</ModalHeader>
-          <ModalBody>
             <Table hover>
                 <thead>
                 <tr>
@@ -45,25 +63,33 @@ class Payments extends React.Component {
                     <th>تاریخ</th>
                     <th>مبلغ</th>
                     <th>وضعیت</th>
+                    <th>مدیریت</th>
                 </tr>
                 </thead>
                 <tbody>
                 {      this.state.items?
                     this.state.items.map((item,index)=>{
+                        this.state.paymentDate = item.payment_date;
+                        if (!item.payment_date) {
+                            this.state.paymentDate = item.due_date;
+
+                        }
                     return(
                         <tr>
                             <th scope="row">{index+1}</th>
-                            <td>{item.payment_date}</td>
+                            <td>{this.state.paymentDate}</td>
                             <td>{item.amount}</td>
-                            <td>{item.status === 'payed'?"پرداخت شده":"پرداخت نشده"}</td>
+                            <td>{item.status === 'payed'?"پرداخت شده":<span style={{WebkitTextFillColor:'red'}}>پرداخت نشده</span>}</td>
+                            <td>
+                            <Button  outline={item.status === 'payed' } size="sm" color="success" block disabled = {item.status === 'payed' }
+                             onClick={()=>this.paymentTransaction(item._id)} > پرداخت  </Button>
+                            </td>
                         </tr>
                     )
                 }):null                    
                 }                
                 </tbody>
             </Table>
-          </ModalBody>
-        </Modal>
       </div>
     );
   }

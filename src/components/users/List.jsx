@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Container, Row, Col, Table, Button,FormGroup,Label,Input } from 'reactstrap';
 import { URL,TOKEN } from '../../constants/api';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { BrowserRouter as Router , Route , Link  } from "react-router-dom";
+
 
 import Create from './Create';
 import Update from './Update';
@@ -147,8 +149,10 @@ class List extends Component {
           <td>
               <Row>
                   <Col>
-                    <Button  outline size="sm" color="primary" block
-                             onClick={()=>this.setState({ status:"payments",itemSelected:item._id})} >پرداخت ها</Button>
+                    <Link to={`/user/${item._id}/payments`} style={{ textDecoration: 'none' }}>
+                      <Button  outline size="sm" color="primary" block
+                              >پرداخت ها</Button>
+                    </Link>
                   </Col>
                   <Col>
                     <Button  outline size="sm" color="success" block

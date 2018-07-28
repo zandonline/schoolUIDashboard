@@ -149,16 +149,29 @@ class Create extends React.Component{
                                 <Input type="radio" name="radio2" onChange={()=>this.setState({ type:'cash' })}/>وجه نقد{' '}
                             </Col>
                         </FormGroup>{this.state.type ==='cart2cart' || this.state.type ==='pos'?
-                        <FormGroup row>
-                                <Label for="teacher" sm={3}>شماره رهگیری</Label>
-                                <Col sm={9}>
-                                    <Input 
-                                        type="text"
-                                        name="teacher" 
-                                        id="teacher" 
-                                        onChange={(e)=>this.setState({card_num:e.target.value})} />
-                                </Col>
-                        </FormGroup>:null }
+                        <div>
+                            <FormGroup row>
+                                    <Label for="card_num" sm={3}>شماره کارت</Label>
+                                    <Col sm={9}>
+                                        <Input 
+                                            type="text"
+                                            name="card_num" 
+                                            id="card_num" 
+                                            onChange={(e)=>this.setState({card_num:e.target.value})} />
+                                    </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                    <Label for="teacher" sm={3}>شماره پیگیری</Label>
+                                    <Col sm={9}>
+                                        <Input 
+                                            type="text"
+                                            name="track_code" 
+                                            id="track_code" 
+                                            onChange={(e)=>this.setState({track_code:e.target.value})} />
+                                    </Col>
+                            </FormGroup>
+                        </div>
+                        :null }
                         </div> 
             )
         }else{
@@ -195,15 +208,16 @@ class Create extends React.Component{
                                                     onChangeEvent={(e)=>this.chekSet(index,'amount',e.target.value)} />
                                         </FormGroup>
                                         <FormGroup row style={{ fontSize:"13px" }}>
-                                            <Col sm={2}>
+                                            <Col sm={12} md={3}>
                                                 <Input 
                                                     type="text"
                                                     placeholder="روز"
                                                     name="endYear" 
-                                                    id="endYear" 
+                                                    id="endYear"
+
                                                     onChange={(e)=>this.chekSet(index,'chekDay',e.target.value)} />
                                             </Col>
-                                            <Col sm={2}>
+                                            <Col sm={12} md={3}>
                                                 <Input 
                                                     type="text"
                                                     placeholder="ماه"
@@ -211,7 +225,7 @@ class Create extends React.Component{
                                                     id="endMonth" 
                                                     onChange={(e)=>this.chekSet(index,'chekMonth',e.target.value)} />
                                             </Col>
-                                            <Col sm={3}>
+                                            <Col sm={12} md={6}>
                                                 <Input 
                                                     type="text"
                                                     placeholder="سال"
@@ -219,7 +233,7 @@ class Create extends React.Component{
                                                     id="endYear" 
                                                     onChange={(e)=>this.chekSet(index,'chekYear',e.target.value)} />
                                             </Col>
-                                            <Col sm={5}>
+                                            <Col sm={12} md={12}>
                                                 <Input 
                                                     type="text"
                                                     name="name"

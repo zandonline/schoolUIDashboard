@@ -32,7 +32,7 @@ class Create extends React.Component{
                 "teacher": "",
                 "point": 0,
                 "credit": 0,
-                "price": '3465465465465',
+                "price": '',
                 
             },
             errorAddItem:false,
@@ -207,8 +207,8 @@ class Create extends React.Component{
                             </FormGroup>
                             
                            
-                            <FormGroup row>
-                                <Label for="stateDate" sm={3}>تاریخ  شروع </Label>
+                            <FormGroup row style={{ fontSize:"12px" }}>
+                                <Label for="stateDate" sm={2}>تاریخ  شروع </Label>
                                 <Col sm={3}>
                                     <Input 
                                         type="text"
@@ -225,7 +225,7 @@ class Create extends React.Component{
                                         id="startMonth" 
                                         onChange={(e)=>this.changeInput('startMonth','date',e.target.value)} />
                                 </Col>
-                                <Col sm={3}>
+                                <Col sm={4}>
                                     <Input 
                                         type="text"
                                         placeholder="سال"
@@ -234,8 +234,8 @@ class Create extends React.Component{
                                         onChange={(e)=>this.changeInput('startYear','date',e.target.value)} />
                                 </Col>
                             </FormGroup>
-                            <FormGroup row>
-                                <Label for="endDate" sm={3}>تاریخ پایان</Label>
+                            <FormGroup row style={{ fontSize:"12px" }}>
+                                <Label for="endDate" sm={2}>تاریخ پایان</Label>
                                 <Col sm={3}>
                                     <Input 
                                         type="text"
@@ -252,7 +252,7 @@ class Create extends React.Component{
                                         id="endMonth" 
                                         onChange={(e)=>this.changeInput('endMonth','date',e.target.value)} />
                                 </Col>
-                                <Col sm={3}>
+                                <Col sm={4}>
                                     <Input 
                                         type="text"
                                         placeholder="سال"
@@ -266,9 +266,9 @@ class Create extends React.Component{
                                 this.state.days.map( (item,index)=>{
                                     return(
                                         <div>
-                                        <FormGroup row style={{ fontSize:"13px" }}>
-                                            <Label for="day_name" sm={2}>روز برگزاری</Label>
-                                            <Col sm={2}>
+                                        <FormGroup row style={{ fontSize:"12px" }}>
+                                            <Label for="day_name" sm={1}>روز برگزاری</Label>
+                                            <Col sm={3}>
                                                 <CustomInput 
                                                     className="rtl"  
                                                     type="select" 
@@ -286,16 +286,16 @@ class Create extends React.Component{
                                                     
                                                 </CustomInput>
                                             </Col>
-                                            <Label for="starttime" sm={2}> ساعت شروع </Label>
-                                            <Col sm={2}>
+                                            <Label for="starttime" sm={1}> ساعت شروع </Label>
+                                            <Col sm={3}>
                                                 <Input 
                                                     type="text"
                                                     name="starttime" 
                                                     id="starttime" 
                                                     onChange={(e)=>this.daysSet( index,"starttime",e.target.value )} />
                                             </Col>
-                                            <Label for="price" sm={2}> ساعت پایان </Label>
-                                            <Col sm={2}>
+                                            <Label for="price" sm={1}> ساعت پایان </Label>
+                                            <Col sm={3}>
                                                 <Input 
                                                     type="text"
                                                     name="endtime" 
