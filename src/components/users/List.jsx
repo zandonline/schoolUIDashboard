@@ -20,7 +20,8 @@ class List extends Component {
        hasMore:true,
        itemSelected:false,
        firstname:'',
-       lastname:''
+       lastname:'',
+       loading:true,
      };
   }
   componentDidMount(){
@@ -30,6 +31,7 @@ class List extends Component {
     this.getItems(this.state.page);
   }
   getItems =(page,search)=> {
+      this.setState({ loading:true });
       fetch(`${URL}customers?pagesize=20&pagenum=${page}&firstname=${this.state.firstname}&lastname=${this.state.lastname}`,{
           method:'GET',
           headers:{
@@ -41,17 +43,19 @@ class List extends Component {
         var items =search?[]: this.state.items;
         if(resp.length === 0){
           console.log(resp);
-          this.setState({status:'',hasMore:false});
+          this.setState({status:'',hasMore:false,loading:false});
         }else{
           resp.map(res=>{
             items.push(res)
           })
-          this.setState({ items , status:'',page:this.state.page+1 });
+          this.setState({ items , status:'',page:this.state.page+1,loading:false });
         }
         this.setState({items})
       })
       .catch( err =>{
           console.log(err);
+          this.setState({ loading:false });
+
       });
   }
   deleteItem(id){
@@ -125,8 +129,8 @@ class List extends Component {
         <InfiniteScroll
           dataLength={this.state.items.length}
           next={this.nextPage}
-          hasMore={true}
-          loader={<h4>Loading...</h4>}
+          hasMore={this.state.hasMore}
+          loader={this.state.loading?<h5>در حال دریافت اطلاعات ...</h5>:null}
         >
         <Table hover style={{ textAlign:'center' }}>
             <thead>
