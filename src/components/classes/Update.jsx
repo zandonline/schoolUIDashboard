@@ -80,6 +80,9 @@ class Update extends React.Component{
     addItem = () => {
         var item = this.state.item;
         var date = this.state.date;
+        var re = /,/gi;
+        item.price = parseInt(item.price.toString().replace(re,''));
+        console.log(item.price);
         if(date.startYear!=='' && date.startMonth !==''&&date.startDay !==''){    
            item.startdate=date.startYear+'/'+date.startMonth+'/'+date.startDay;
         }

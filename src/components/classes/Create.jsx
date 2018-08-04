@@ -74,6 +74,9 @@ class Create extends React.Component{
         this.setState({errorAddItem:false,success:false})
         var item = this.state.item;
         var date = this.state.date;
+        var re = /,/gi;
+        item.price = parseInt(item.price.toString().replace(re,''));
+        console.log(item.price);
         if(date.startYear!=='' && date.startMonth !==''&&date.startDay !==''){    
            item.startdate=date.startYear+'/'+date.startMonth+'/'+date.startDay;
         }
