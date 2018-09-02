@@ -135,6 +135,12 @@ class Create extends React.Component{
     toggle = () =>{
         this.props.toggle();
       }
+    onKeyPress(event) {
+        const keyCode = event.keyCode || event.which;
+        const keyValue = String.fromCharCode(keyCode);
+        if (!/^[0-9]*$/.test(keyValue))
+          event.preventDefault();
+    }
     renderTransaction=()=>{
         if( this.state.pay ){
             return  (   <div>
@@ -156,7 +162,8 @@ class Create extends React.Component{
                                         <Input 
                                             type="text"
                                             name="card_num" 
-                                            id="card_num" 
+                                            id="card_num"
+                                            onKeyPress={this.onKeyPress} 
                                             onChange={(e)=>this.setState({card_num:e.target.value})} />
                                     </Col>
                             </FormGroup>
@@ -167,6 +174,7 @@ class Create extends React.Component{
                                             type="text"
                                             name="track_code" 
                                             id="track_code" 
+                                            onKeyPress={this.onKeyPress}
                                             onChange={(e)=>this.setState({track_code:e.target.value})} />
                                     </Col>
                             </FormGroup>
@@ -188,7 +196,7 @@ class Create extends React.Component{
                 <div>
                 باقیمانده : {total.toLocaleString() }
                 <FormGroup>
-                    <Label for="prepayment" > پیش پرداخت </Label>
+                    <Label for="prepayment" > پیش پرداخت (ریال) </Label>
                         <CurrencyInput 
                             className="form-control"
                             precision="0"
@@ -200,7 +208,7 @@ class Create extends React.Component{
                                     return(
                                         <div>
                                         <FormGroup>
-                                            <Label for="amount" > مبلغ قسط </Label>
+                                            <Label for="amount" > مبلغ قسط(ریال) </Label>
                                                 <CurrencyInput 
                                                     className="form-control"
                                                     precision="0"
@@ -214,7 +222,7 @@ class Create extends React.Component{
                                                     placeholder="روز"
                                                     name="endYear" 
                                                     id="endYear"
-
+                                                    onKeyPress={this.onKeyPress}
                                                     onChange={(e)=>this.chekSet(index,'chekDay',e.target.value)} />
                                             </Col>
                                             <Col sm={12} md={3}>
@@ -223,6 +231,7 @@ class Create extends React.Component{
                                                     placeholder="ماه"
                                                     name="endMonth" 
                                                     id="endMonth" 
+                                                    onKeyPress={this.onKeyPress}
                                                     onChange={(e)=>this.chekSet(index,'chekMonth',e.target.value)} />
                                             </Col>
                                             <Col sm={12} md={6}>
@@ -231,6 +240,7 @@ class Create extends React.Component{
                                                     placeholder="سال"
                                                     name="endYear" 
                                                     id="endYear" 
+                                                    onKeyPress={this.onKeyPress}
                                                     onChange={(e)=>this.chekSet(index,'chekYear',e.target.value)} />
                                             </Col>
                                             <Col sm={12} md={12}>
@@ -239,6 +249,7 @@ class Create extends React.Component{
                                                     name="name"
                                                     placeholder="شماره چک" 
                                                     id="name" 
+                                                    onKeyPress={this.onKeyPress}
                                                     onChange={(e)=>this.chekSet(index,'check_number',e.target.value)} />
                                             </Col>
                                         </FormGroup>
@@ -345,7 +356,7 @@ class Create extends React.Component{
                                 نام دوره : {this.state.classValue.label}
                                     </Row>
                                     <Row>
-                                        قیمت :{this.state.classValue.price}
+                                        قیمت :{parseInt(this.state.classValue.price).toLocaleString()} ریال
                                     </Row>
                                     <Row>
                                         استاد :{this.state.classValue.teacher}
@@ -360,7 +371,7 @@ class Create extends React.Component{
                         </FormGroup>   
                         <FormGroup row>
                             <Col sm="4">
-                                <Label for="radio1">نحوه پرداخت</Label>  
+                                <Label for="radio1"> نحوه پرداخت</Label>  
                             </Col>
                             <Col  sm="4">
                                 <Input type="radio" name="radio1" checked={this.state.pay} onChange={()=>this.setState({ pay:true })}/>نقدی{' '}

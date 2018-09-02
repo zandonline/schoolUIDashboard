@@ -1,7 +1,6 @@
 import React from 'react';
 import { URL,TOKEN } from '../../constants/api';
 import axios from 'axios';
-
 import { 
     Modal,
     ModalHeader,
@@ -30,8 +29,10 @@ class Create extends React.Component{
                     phone:''
                 },
                 username:false,
+                email:'',
                 gender:'male',
                 favorites:'',
+                company_address:'',
                 national_code:'',
                 marriage_date:'',
                 phones:[],
@@ -135,7 +136,12 @@ class Create extends React.Component{
         phone_numbers[index] = value;
         this.setState({phone_numbers});
     }
-
+    onKeyPress(event) {
+        const keyCode = event.keyCode || event.which;
+        const keyValue = String.fromCharCode(keyCode);
+        if (!/^[0-9]*$/.test(keyValue))
+          event.preventDefault();
+    }
     render(){
         return(
             <div>
@@ -193,6 +199,7 @@ class Create extends React.Component{
                                         type="text"
                                         name="shomare_shenasname" 
                                         id="shomare_shenasname" 
+                                        onKeyPress={this.onKeyPress}
                                         onChange={(e)=>this.changeInput(e.target.value,'shomare_shenasname',false)} />
                                 </Col>
                             </FormGroup>
@@ -201,9 +208,10 @@ class Create extends React.Component{
                                 <Col sm={9}>
                                     <Input 
                                         type="text"
-                                        maxlength="11"
+                                        maxlength="10"
                                         name="national_code" 
                                         id="national_code" 
+                                        onKeyPress={this.onKeyPress}
                                         onChange={(e)=>this.changeInput(e.target.value,'national_code',false)} />
                                 </Col>
                             </FormGroup>
@@ -215,6 +223,7 @@ class Create extends React.Component{
                                         placeholder="روز"
                                         name="birthday" 
                                         id="birthday" 
+                                        onKeyPress={this.onKeyPress}
                                         onChange={(e)=>this.changeInput(e.target.value,'brithDay','date',2)} />
                                 </Col>
                                 <Col sm={3}>
@@ -222,7 +231,8 @@ class Create extends React.Component{
                                         type="text"
                                         placeholder="ماه"
                                         name="marriage_date" 
-                                        id="marriage_date" 
+                                        id="marriage_date"
+                                        onKeyPress={this.onKeyPress} 
                                         onChange={(e)=>this.changeInput(e.target.value,'brithMonth','date',1)} />
                                 </Col>
                                 <Col sm={4}>
@@ -231,6 +241,7 @@ class Create extends React.Component{
                                         placeholder="سال"
                                         name="birthname" 
                                         id="birthname" 
+                                        onKeyPress={this.onKeyPress}
                                         onChange={(e)=>this.changeInput(e.target.value,'brithYear','date',0)} />
                                 </Col>
                             </FormGroup>
@@ -239,7 +250,6 @@ class Create extends React.Component{
                                 <Col sm={9}>
                                     <Input 
                                         type="text"
-                                        maxlength="11"
                                         name="place_of_issue" 
                                         id="place_of_issue" 
                                         onChange={(e)=>this.changeInput(e.target.value,'place_of_issue',false)} />
@@ -250,7 +260,6 @@ class Create extends React.Component{
                                 <Col sm={9}>
                                     <Input 
                                         type="text"
-                                        maxlength="11"
                                         name="field" 
                                         id="field" 
                                         onChange={(e)=>this.changeInput(e.target.value,'field','education')} />
@@ -261,7 +270,6 @@ class Create extends React.Component{
                                 <Col sm={9}>
                                     <Input 
                                         type="text"
-                                        maxlength="11"
                                         name="degree" 
                                         id="degree" 
                                         onChange={(e)=>this.changeInput(e.target.value,'field','education')} />                                </Col>
@@ -271,10 +279,19 @@ class Create extends React.Component{
                                 <Col sm={9}>
                                     <Input 
                                         type="text"
-                                        maxlength="11"
                                         name="job" 
                                         id="job" 
                                         onChange={(e)=>this.changeInput(e.target.value,'job',false)} />
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label for="company_address" sm={3}> آدرس محل کار  </Label>
+                                <Col sm={9}>
+                                    <Input 
+                                        type="text"
+                                        name="company_address" 
+                                        id="company_address" 
+                                        onChange={(e)=>this.changeInput(e.target.value,'company_address',false)} />
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
@@ -282,7 +299,6 @@ class Create extends React.Component{
                                 <Col sm={9}>
                                     <Input 
                                         type="text"
-                                        maxlength="11"
                                         name="company_name" 
                                         id="company_name" 
                                         onChange={(e)=>this.changeInput(e.target.value,'company_name',false)} />
@@ -311,7 +327,8 @@ class Create extends React.Component{
                                         type="text"
                                         placeholder="روز"
                                         name="marriage_date" 
-                                        id="marriage_date" 
+                                        id="marriage_date"
+                                        onKeyPress={this.onKeyPress} 
                                         onChange={(e)=>this.changeInput(e.target.value,'margingDay','date',2)} />
                                 </Col>
                                 <Col sm={3}>
@@ -320,6 +337,7 @@ class Create extends React.Component{
                                         placeholder="ماه"
                                         name="marriage_date" 
                                         id="marriage_date" 
+                                        onKeyPress={this.onKeyPress}
                                         onChange={(e)=>this.changeInput(e.target.value,'margingMonth','date',1)} />
                                 </Col>
                                 <Col sm={4}>
@@ -328,17 +346,19 @@ class Create extends React.Component{
                                         placeholder="سال"
                                         name="marriage_date" 
                                         id="marriage_date" 
+                                        onKeyPress={this.onKeyPress}
                                         onChange={(e)=>this.changeInput(e.target.value,'margingYear','date',0)} />
                                 </Col>
                             </FormGroup>
-                            <FormGroup row>
-                                <Label for="address" sm={3}>آدرس</Label>
+                            <FormGroup row >
+                                <Label for="email" sm={3}>ایمیل</Label>
                                 <Col sm={9}>
                                     <Input 
-                                        type="text"
-                                        name="address" 
-                                        id="address" 
-                                        onChange={(e)=>this.changeInput(e.target.value,'address',false)} />
+                                        style={{ direction:'ltr' }}
+                                        type="email"
+                                        name="email" 
+                                        id="email" 
+                                        onChange={(e)=>this.changeInput(e.target.value,'email',false)} />
                                 </Col>
                             </FormGroup>
                             {
@@ -352,6 +372,7 @@ class Create extends React.Component{
                                                     maxlength="13"
                                                     name="phone_number" 
                                                     id="phone_number" 
+                                                    onKeyPress={this.onKeyPress}
                                                     onChange={(e)=>this.setPhoneNumbers(index,e.target.value)} />
                                             </Col>
                                         </FormGroup>
@@ -373,6 +394,7 @@ class Create extends React.Component{
                                                 name="phone_number"
                                                 maxlength="13" 
                                                 id="phone_number" 
+                                                onKeyPress={this.onKeyPress}
                                                 onChange={(e)=>this.setPhone(index,e.target.value)} />
                                         </Col>
                                     </FormGroup>
@@ -398,9 +420,11 @@ class Create extends React.Component{
                                 <Col sm={9}>
                                     <Input 
                                         type="text"
-                                        name="postal_code" 
+                                        name="postal_code"
+                                        maxlength="10" 
                                         id="postal_code" 
-                                        onChange={(e)=>this.changeInput(e.target.value,'postal_code',false)} />
+                                        onChange={(e)=>this.changeInput(e.target.value,'postal_code',false)}
+                                        onKeyPress={this.onKeyPress} />
                                 </Col>
                             </FormGroup>
                             

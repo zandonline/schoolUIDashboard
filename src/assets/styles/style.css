@@ -1,3 +1,38 @@
 .required-star{
     -webkit-text-fill-color: red;
 }
+.loader-background{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background: #000;
+    z-index: 1500;
+    top: 0;
+    right: 0;
+    left: 0;
+    opacity: 0.5;
+  }
+  .loader {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #e3001b;
+    position: absolute;
+    left:50%;
+    margin-left:-35px;
+    top:50%;
+    margin-top: -35px; 
+    width: 70px;
+    height: 70px;
+    z-index: 1500;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+  }
+  @-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }

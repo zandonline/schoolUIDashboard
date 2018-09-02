@@ -136,6 +136,12 @@ class Update extends React.Component{
         phone_numbers[index] = value;
         this.setState({phone_numbers});
     }
+    onKeyPress(event) {
+        const keyCode = event.keyCode || event.which;
+        const keyValue = String.fromCharCode(keyCode);
+        if (!/^[0-9]*$/.test(keyValue))
+          event.preventDefault();
+      }
     render(){
             const item = this.state.item;
             const date = this.state.date;
@@ -211,10 +217,11 @@ class Update extends React.Component{
                                 <Col sm={9}>
                                     <Input 
                                         type="text"
-                                        maxlength="11"
+                                        maxlength="10"
                                         value={item.code_meli}
                                         name="national_code" 
                                         id="national_code" 
+                                        onKeyPress={this.onKeyPress}
                                         value={item.national_code}
                                         onChange={(e)=>this.changeInput(e.target.value,'national_code',false)} />
                                 </Col>
@@ -227,6 +234,7 @@ class Update extends React.Component{
                                         placeholder="روز"
                                         name="birthday" 
                                         id="birthday" 
+                                        onKeyPress={this.onKeyPress}
                                         value={date.brithDay}
                                         onChange={(e)=>this.changeInput(e.target.value,'brithDay','date',2)} />
                                 </Col>
@@ -236,6 +244,7 @@ class Update extends React.Component{
                                         placeholder="ماه"
                                         name="marriage_date" 
                                         id="marriage_date" 
+                                        onKeyPress={this.onKeyPress}
                                         value={date.brithMonth}
                                         onChange={(e)=>this.changeInput(e.target.value,'brithMonth','date',1)} />
                                 </Col>
@@ -244,6 +253,7 @@ class Update extends React.Component{
                                         type="text"
                                         placeholder="سال"
                                         name="birthname" 
+                                        onKeyPress={this.onKeyPress}
                                         id="birthname"
                                         value={date.brithYear} 
                                         onChange={(e)=>this.changeInput(e.target.value,'brithYear','date',0)} />
@@ -254,7 +264,6 @@ class Update extends React.Component{
                                 <Col sm={9}>
                                     <Input 
                                         type="text"
-                                        maxlength="11"
                                         name="place_of_issue" 
                                         id="place_of_issue" 
                                         value={item.place_of_issue}                                        
@@ -266,7 +275,6 @@ class Update extends React.Component{
                                 <Col sm={9}>
                                     <Input 
                                         type="text"
-                                        maxlength="11"
                                         name="field" 
                                         id="field" 
                                         value={item.education.field}
@@ -278,7 +286,6 @@ class Update extends React.Component{
                                 <Col sm={9}>
                                     <Input 
                                         type="text"
-                                        maxlength="11"
                                         name="degree" 
                                         id="degree" 
                                         value={item.education.degree}
@@ -289,7 +296,6 @@ class Update extends React.Component{
                                 <Col sm={9}>
                                     <Input 
                                         type="text"
-                                        maxlength="11"
                                         name="job" 
                                         id="job" 
                                         value={item.job}
@@ -297,11 +303,21 @@ class Update extends React.Component{
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
+                                <Label for="company_address" sm={3}> آدرس محل کار  </Label>
+                                <Col sm={9}>
+                                    <Input 
+                                        type="text"
+                                        name="company_address" 
+                                        id="company_address" 
+                                        value={item.company_address}
+                                        onChange={(e)=>this.changeInput(e.target.value,'company_address',false)} />
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
                                 <Label for="company_name" sm={3}> نام شرکت محل کار  </Label>
                                 <Col sm={9}>
                                     <Input 
                                         type="text"
-                                        maxlength="11"
                                         name="company_name" 
                                         id="company_name" 
                                         value={item.company_name}
@@ -332,7 +348,8 @@ class Update extends React.Component{
                                         type="text"
                                         placeholder="روز"
                                         name="marriage_date" 
-                                        id="marriage_date" 
+                                        id="marriage_date"
+                                        onKeyPress={this.onKeyPress} 
                                         value={date.margingDay}
                                         onChange={(e)=>this.changeInput(e.target.value,'margingDay','date',2)} />
                                 </Col>
@@ -342,6 +359,7 @@ class Update extends React.Component{
                                         placeholder="ماه"
                                         name="marriage_date" 
                                         id="marriage_date" 
+                                        onKeyPress={this.onKeyPress}
                                         value={date.margingMonth}
                                         onChange={(e)=>this.changeInput(e.target.value,'margingMonth','date',1)} />
                                 </Col>
@@ -351,8 +369,21 @@ class Update extends React.Component{
                                         placeholder="سال"
                                         name="marriage_date" 
                                         id="marriage_date"
+                                        onKeyPress={this.onKeyPress}
                                         value={date.margingYear}
                                         onChange={(e)=>this.changeInput(e.target.value,'margingYear','date',0)} />
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row >
+                                <Label for="email" sm={3}>ایمیل</Label>
+                                <Col sm={9}>
+                                    <Input 
+                                        style={{ direction:'ltr' }}
+                                        type="email"
+                                        name="email" 
+                                        id="email" 
+                                        value={item.email}
+                                        onChange={(e)=>this.changeInput(e.target.value,'email',false)} />
                                 </Col>
                             </FormGroup>
                             {
@@ -367,6 +398,7 @@ class Update extends React.Component{
                                                     name="phone_number" 
                                                     id="phone_number" 
                                                     value={phone}
+                                                    onKeyPress={this.onKeyPress}
                                                     onChange={(e)=>this.setPhoneNumbers(index,e.target.value)} />
                                             </Col>
                                         </FormGroup>
@@ -389,6 +421,7 @@ class Update extends React.Component{
                                                 maxlength="13" 
                                                 id="phone_number" 
                                                 value={phone}
+                                                onKeyPress={this.onKeyPress}
                                                 onChange={(e)=>this.setPhone(index,e.target.value)} />
                                         </Col>
                                     </FormGroup>
@@ -417,6 +450,8 @@ class Update extends React.Component{
                                         type="text"
                                         name="postal_code" 
                                         id="postal_code" 
+                                        maxlength="13"
+                                        onKeyPress={this.onKeyPress}
                                         value={item.postal_code}
                                         onChange={(e)=>this.changeInput(e.target.value,'postal_code',false)} />
                                 </Col>

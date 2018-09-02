@@ -137,8 +137,13 @@ class Create extends React.Component{
         days.push({starttime:'',endtime:'',day_name:''});
         this.setState({days});
     }
+    onKeyPress(event) {
+        const keyCode = event.keyCode || event.which;
+        const keyValue = String.fromCharCode(keyCode);
+        if (!/^[0-9]*$/.test(keyValue))
+          event.preventDefault();
+    }
     render(){
-        console.log("stat",this.state)
         return(
             <div>
             <div style={{ width:"50%" }}>
@@ -198,7 +203,7 @@ class Create extends React.Component{
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label for="price" sm={3}> قیمت </Label>
+                                <Label for="price" sm={3}> قیمت (ریال)</Label>
                                 <Col sm={9}>
                                     <CurrencyInput 
                                         value={this.state.item.price} 
@@ -217,7 +222,8 @@ class Create extends React.Component{
                                         type="text"
                                         placeholder="روز"
                                         name="startDay" 
-                                        id="startDay" 
+                                        id="startDay"
+                                        onKeyPress={this.onKeyPress} 
                                         onChange={(e)=>this.changeInput('startDay','date',e.target.value)} />
                                 </Col>
                                 <Col sm={3}>
@@ -226,6 +232,7 @@ class Create extends React.Component{
                                         placeholder="ماه"
                                         name="startMonth" 
                                         id="startMonth" 
+                                        onKeyPress={this.onKeyPress}
                                         onChange={(e)=>this.changeInput('startMonth','date',e.target.value)} />
                                 </Col>
                                 <Col sm={4}>
@@ -234,6 +241,7 @@ class Create extends React.Component{
                                         placeholder="سال"
                                         name="startYear" 
                                         id="startYear" 
+                                        onKeyPress={this.onKeyPress}
                                         onChange={(e)=>this.changeInput('startYear','date',e.target.value)} />
                                 </Col>
                             </FormGroup>
@@ -245,6 +253,7 @@ class Create extends React.Component{
                                         placeholder="روز"
                                         name="endYear" 
                                         id="endYear" 
+                                        onKeyPress={this.onKeyPress}
                                         onChange={(e)=>this.changeInput('endDay','date',e.target.value)} />
                                 </Col>
                                 <Col sm={3}>
@@ -253,6 +262,7 @@ class Create extends React.Component{
                                         placeholder="ماه"
                                         name="endMonth" 
                                         id="endMonth" 
+                                        onKeyPress={this.onKeyPress}
                                         onChange={(e)=>this.changeInput('endMonth','date',e.target.value)} />
                                 </Col>
                                 <Col sm={4}>
@@ -261,6 +271,7 @@ class Create extends React.Component{
                                         placeholder="سال"
                                         name="endYear" 
                                         id="endYear" 
+                                        onKeyPress={this.onKeyPress}
                                         onChange={(e)=>this.changeInput('endYear','date',e.target.value)} />
                                 </Col>
                             </FormGroup>

@@ -145,6 +145,12 @@ class Update extends React.Component{
         days.push({starttime:'',endtime:'',day_name:''});
         this.setState({days});
     }
+    onKeyPress(event) {
+        const keyCode = event.keyCode || event.which;
+        const keyValue = String.fromCharCode(keyCode);
+        if (!/^[0-9]*$/.test(keyValue))
+          event.preventDefault();
+    }
     render(){
         const item = this.state.item;
         const date = this.state.date;
@@ -233,6 +239,7 @@ class Update extends React.Component{
                                         placeholder="روز"
                                         name="startDay" 
                                         id="startDay" 
+                                        onKeyPress={this.onKeyPress}
                                         value={date.startDay}
                                         onChange={(e)=>this.changeInput('startDay','date',e.target.value)} />
                                 </Col>
@@ -242,6 +249,7 @@ class Update extends React.Component{
                                         placeholder="ماه"
                                         name="startMonth" 
                                         id="startMonth" 
+                                        onKeyPress={this.onKeyPress}
                                         value={date.startMonth}
                                         onChange={(e)=>this.changeInput('startMonth','date',e.target.value)} />
                                 </Col>
@@ -250,7 +258,8 @@ class Update extends React.Component{
                                         type="text"
                                         placeholder="سال"
                                         name="startYear" 
-                                        id="startYear" 
+                                        id="startYear"
+                                        onKeyPress={this.onKeyPress} 
                                         value={date.startYear}
                                         onChange={(e)=>this.changeInput('startYear','date',e.target.value)} />
                                 </Col>
@@ -263,6 +272,7 @@ class Update extends React.Component{
                                         placeholder="روز"
                                         name="endYear" 
                                         id="endYear" 
+                                        onKeyPress={this.onKeyPress}
                                         value={date.endDay}
                                         onChange={(e)=>this.changeInput('endDay','date',e.target.value)} />
                                 </Col>
@@ -272,6 +282,7 @@ class Update extends React.Component{
                                         placeholder="ماه"
                                         name="endMonth" 
                                         id="endMonth" 
+                                        onKeyPress={this.onKeyPress}
                                         value={date.endMonth}
                                         onChange={(e)=>this.changeInput('endMonth','date',e.target.value)} />
                                 </Col>
@@ -280,7 +291,8 @@ class Update extends React.Component{
                                         type="text"
                                         placeholder="سال"
                                         name="endYear" 
-                                        id="endYear" 
+                                        id="endYear"
+                                        onKeyPress={this.onKeyPress} 
                                         value={date.endYear}
                                         onChange={(e)=>this.changeInput('endYear','date',e.target.value)} />
                                 </Col>
